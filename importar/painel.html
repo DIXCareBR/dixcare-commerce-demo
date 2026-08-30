@@ -1,0 +1,140 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Importar catálogo — Dix Medical</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  :root{ --bg:#FAFBFD;--surface:#fff;--surface-2:#F1F4F8;--ink:#0A1622;--ink-soft:#45566A;--ink-faint:#7A8B9C;
+    --line:#E6EBF1;--primary:#01376B;--primary-bg:#E4EEF8;--cta:#3DC04E;--cta-d:#33A845;--sale:#E0393B;--warn:#9A6209;--warn-bg:#F8EEDA;--ok:#16855A;--ok-bg:#E1F1E9;
+    --shadow:0 1px 2px rgba(10,22,34,.05),0 12px 30px -20px rgba(10,22,34,.3);}
+  @media (prefers-color-scheme:dark){:root{ --bg:#080D14;--surface:#101822;--surface-2:#18222E;--ink:#EAF0F7;--ink-soft:#A4B4C6;--ink-faint:#758699;
+    --line:#212C39;--primary:#4E9BE0;--primary-bg:#152A41;--cta:#4FC96A;--cta-d:#3EB157;--sale:#F0605F;--warn:#E0AB57;--warn-bg:#2C2413;--ok:#4FBF89;--ok-bg:#122A20;}}
+  *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:14px}
+  h1{font-family:Archivo;font-weight:800;letter-spacing:-.02em;margin:0;font-size:1.35rem}
+  .mono{font-family:"IBM Plex Mono",monospace}
+  .wrap{max-width:60rem;margin:0 auto;padding:1rem clamp(.8rem,3vw,1.6rem) 6rem}
+  .top{position:sticky;top:0;z-index:5;background:var(--bg);padding:.8rem 0 .7rem;border-bottom:1px solid var(--line)}
+  .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint)}
+  .sub{color:var(--ink-soft);font-size:.82rem;margin-top:.25rem}
+  .sub b{color:var(--ink)}
+  .grid{display:grid;grid-template-columns:1fr;gap:.7rem;margin-top:1rem}
+  @media(min-width:40rem){.grid{grid-template-columns:1fr 1fr}}
+  .card{display:grid;grid-template-columns:74px 1fr;gap:.8rem;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:.8rem;box-shadow:var(--shadow);transition:opacity .15s}
+  .card.rasc{opacity:.62}
+  .fig{width:74px;height:74px;border-radius:9px;background:#fff center/contain no-repeat;border:1px solid var(--line);flex:none}
+  .body{min-width:0}
+  .nome{font-weight:600;font-size:.9rem;line-height:1.25;outline:none;border-radius:4px}
+  .row{display:flex;align-items:center;gap:.5rem;margin-top:.4rem;flex-wrap:wrap}
+  .preco{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:.95rem;color:var(--cta-d)}
+  [contenteditable]{cursor:text}[contenteditable]:hover{background:var(--surface-2)}[contenteditable]:focus{background:var(--surface-2);outline:1.5px solid var(--primary)}
+  .cat{font-size:.72rem;border:1px solid var(--line);background:var(--surface-2);border-radius:6px;padding:.15rem .4rem;color:var(--ink-soft);font-family:inherit}
+  .cat.vazia{color:var(--warn);border-color:var(--warn);background:var(--warn-bg)}
+  .meta{font-size:.68rem;color:var(--ink-faint);margin-top:.4rem;display:flex;gap:.7rem;flex-wrap:wrap;align-items:center}
+  .meta a{color:var(--primary)}
+  .tgl{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.05em;text-transform:uppercase;border:1px solid var(--line);border-radius:999px;padding:.2rem .55rem;cursor:pointer;background:var(--surface)}
+  .tgl.on{background:var(--ok-bg);color:var(--ok);border-color:var(--ok)}
+  .tgl.off{background:var(--warn-bg);color:var(--warn);border-color:var(--warn)}
+  .bar{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--line);padding:.7rem clamp(.8rem,3vw,1.6rem);display:flex;gap:.6rem;align-items:center;box-shadow:0 -8px 24px -18px rgba(0,0,0,.4);flex-wrap:wrap}
+  .btn{font:inherit;font-weight:600;font-size:.84rem;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:.5rem .9rem;cursor:pointer}
+  .btn-primary{background:var(--cta);color:#fff;border-color:var(--cta)}.btn-primary:hover{background:var(--cta-d)}
+  .barmsg{color:var(--ink-soft);font-size:.8rem;margin-right:auto}
+  .barmsg b{color:var(--ink)}
+  .toast{position:fixed;bottom:5rem;left:50%;transform:translateX(-50%) translateY(1rem);background:var(--ink);color:var(--bg);padding:.6rem 1.1rem;border-radius:9px;font-size:.82rem;opacity:0;transition:.25s;pointer-events:none;z-index:9}
+  .toast.show{opacity:1;transform:translateX(-50%)}
+  .loading{padding:3rem;text-align:center;color:var(--ink-faint)}
+</style>
+
+<div class="top"><div class="wrap" style="padding-bottom:0">
+  <div class="eyebrow">Importar catálogo · fonte: loja.dixmedical.com.br</div>
+  <h1>Produtos puxados da sua loja</h1>
+  <div class="sub" id="sub">Lendo…</div>
+</div></div>
+
+<div class="wrap">
+  <div class="grid" id="grid"><div class="loading">Carregando o que saiu da loja…</div></div>
+</div>
+
+<div class="bar">
+  <span class="barmsg" id="barmsg">—</span>
+  <button class="btn" id="aprovarTodos">Aprovar todos</button>
+  <button class="btn-primary btn" id="importar">Importar aprovados →</button>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const brl = v => 'R$ ' + Number(v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+const $ = s => document.querySelector(s);
+let itens = [];
+function toast(t){ const el=$('#toast'); el.textContent=t; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),1900); }
+
+function precoNum(txt){ const n=Number(String(txt).replace(/[^\d,.-]/g,'').replace(/\.(?=\d{3})/g,'').replace(',','.')); return isFinite(n)?n:0; }
+
+function render(data){
+  itens = data.itens.map((x,i)=>({...x, id:i, aprovado:false}));
+  $('#sub').innerHTML = `<b>${data.puxados}</b> produtos reais da sua loja (de ${data.total} URLs no mapa) · edite e aprove o que vai pro catálogo`;
+  const g = $('#grid'); g.innerHTML='';
+  itens.forEach(it=>{
+    const c = document.createElement('div'); c.className='card rasc'; c.dataset.id=it.id;
+    c.innerHTML = `
+      <div class="fig" style="background-image:url('${it.img}')"></div>
+      <div class="body">
+        <div class="nome" contenteditable="true" data-f="nome">${it.nome}</div>
+        <div class="row">
+          <span class="preco" contenteditable="true" data-f="preco">${brl(it.preco)}</span>
+          <input class="cat ${it.cat?'':'vazia'}" data-f="cat" value="${it.cat}" placeholder="categoria?">
+        </div>
+        <div class="meta">
+          <span class="mono">${it.sku||'sem SKU'}</span>
+          <a href="${it.fonte}" target="_blank" rel="noopener">ver na loja ↗</a>
+          <span class="tgl off" data-tgl>rascunho</span>
+        </div>
+      </div>`;
+    g.appendChild(c);
+  });
+  wire(); tally();
+}
+
+function wire(){
+  document.querySelectorAll('.card').forEach(c=>{
+    const id=+c.dataset.id, it=itens[id];
+    c.querySelector('[data-f="nome"]').addEventListener('blur',e=>it.nome=e.target.textContent.trim());
+    c.querySelector('[data-f="preco"]').addEventListener('blur',e=>{ it.preco=precoNum(e.target.textContent); e.target.textContent=brl(it.preco); });
+    const cat=c.querySelector('[data-f="cat"]'); cat.addEventListener('input',e=>{ it.cat=e.target.value.trim(); cat.classList.toggle('vazia',!it.cat); });
+    c.querySelector('[data-tgl]').addEventListener('click',e=>{ it.aprovado=!it.aprovado; paint(c,it); tally(); });
+  });
+}
+function paint(c,it){ const t=c.querySelector('[data-tgl]'); c.classList.toggle('rasc',!it.aprovado);
+  t.className='tgl '+(it.aprovado?'on':'off'); t.textContent=it.aprovado?'aprovado':'rascunho'; }
+function tally(){ const n=itens.filter(x=>x.aprovado).length; $('#barmsg').innerHTML=`<b>${n}</b> de ${itens.length} aprovados`; }
+
+$('#aprovarTodos').addEventListener('click',()=>{ itens.forEach(x=>x.aprovado=true); document.querySelectorAll('.card').forEach(c=>paint(c,itens[+c.dataset.id])); tally(); toast('Todos aprovados — confira e importe'); });
+$('#importar').addEventListener('click',()=>{ const aprov=itens.filter(x=>x.aprovado);
+  if(!aprov.length){ toast('Aprove ao menos um produto'); return; }
+  const mapped=aprov.map(x=>({nome:x.nome, cat:x.cat, por:x.preco, img:x.img, fonte:x.fonte, sku:x.sku}));
+  try{ localStorage.setItem('diximportados.v1', JSON.stringify(mapped)); }
+  catch(e){ toast('Não coube no navegador — aprove menos por vez'); return; }
+  toast(`${aprov.length} enviados pro admin → abra Produtos & Preços pra ver`); });
+
+fetch('importados.json').then(r=>r.json()).then(render).catch(e=>{ $('#grid').innerHTML='<div class="loading">Não achei importados.json — rode o importador primeiro.</div>'; });
+</script>
+
+<script>(function(){
+  var KEY='dixgate.ok'; try{ if(sessionStorage.getItem(KEY)==='1') return; }catch(e){}
+  var CODE='dix2026';
+  var o=document.createElement('div');
+  o.style.cssText='position:fixed;inset:0;z-index:99999;background:var(--bg,#080D14);display:flex;align-items:center;justify-content:center;padding:1.5rem;font-family:"IBM Plex Sans",system-ui,sans-serif';
+  o.innerHTML='<div style="max-width:22rem;width:100%;text-align:center;color:var(--ink,#EAF0F7)">'+
+    '<div style="font-family:\'IBM Plex Mono\',monospace;font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint,#758699);margin-bottom:.8rem">Area interna · Dix Medical</div>'+
+    '<h2 style="font-family:Archivo,sans-serif;font-weight:800;margin:0 0 .5rem;font-size:1.4rem">Acesso restrito</h2>'+
+    '<p style="color:var(--ink-soft,#A4B4C6);font-size:.85rem;margin:0 0 1.1rem;line-height:1.5">Ferramenta interna. Digite o código para entrar.</p>'+
+    '<input id="dixgi" type="password" placeholder="código" autocomplete="off" style="width:100%;padding:.7rem .8rem;border:1px solid var(--line,#212C39);border-radius:9px;background:var(--surface-2,#18222E);color:inherit;font:inherit;text-align:center;letter-spacing:.1em">'+
+    '<div id="dixge" style="color:var(--sale,#F0605F);font-size:.78rem;height:1.1rem;margin:.4rem 0"></div>'+
+    '<button id="dixgb" style="width:100%;padding:.7rem;border:0;border-radius:9px;background:var(--cta,#3DC04E);color:#fff;font:inherit;font-weight:600;cursor:pointer">Entrar</button>'+
+    '<p style="color:var(--ink-faint,#758699);font-size:.66rem;margin:1rem 0 0;line-height:1.45">Trava simples de demonstração — não é segurança real. Dados de exemplo.</p>'+
+  '</div>';
+  function mount(){ document.body.appendChild(o); document.documentElement.style.overflow='hidden';
+    var inp=o.querySelector('#dixgi'),err=o.querySelector('#dixge'),btn=o.querySelector('#dixgb');
+    function go(){ if(inp.value===CODE){ try{sessionStorage.setItem(KEY,'1')}catch(e){} document.documentElement.style.overflow=''; o.remove(); } else { err.textContent='Código incorreto.'; inp.select(); } }
+    btn.onclick=go; inp.addEventListener('keydown',function(e){ if(e.key==='Enter') go(); }); setTimeout(function(){inp.focus()},60);
+  }
+  if(document.body) mount(); else document.addEventListener('DOMContentLoaded',mount);
+})();</script>
