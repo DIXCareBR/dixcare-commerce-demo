@@ -177,7 +177,7 @@
       var add = 0;
       arr.forEach(function(x){ var nm=(x.nome||'').trim(); if(!nm || nomes.has(nm.toLowerCase())) return;
         db.produtos.push({ id:uid(), nome:nm, cat:x.cat||'', vendedor:'p_casa', anvisa:'',
-          de:0, por:Math.round((Number(x.por)||0)*100)/100, estoque:0, status:'ATIVO', img:x.img||'' });
+          de:0, por:Math.round((Number(x.por)||0)*100)/100, estoque:0, status:'ATIVO', modo:'SOB_CONSULTA', img:x.img||'' });
         nomes.add(nm.toLowerCase()); add++; });
       localStorage.removeItem('diximportados.v1');
       if(add){ save(); window.__impN = add; }
@@ -212,7 +212,7 @@
   function renderPainel(){
     const ativos = db.produtos.filter(p=>p.status==='ATIVO').length;
     const campAtivas = db.anuncios.filter(a=>a.status==='ATIVO').length;
-    const semEstoque = db.produtos.filter(p=>p.estoque<=0);
+    const semEstoque = db.produtos.filter(p=>(p.modo||'AUTOMATICO')!=='SOB_CONSULTA' && p.estoque<=0);
     const rascunhos = db.produtos.filter(p=>p.status!=='ATIVO');
     const parcSemCk = db.parceiros.filter(p=>p.tipo==='PARCEIRO'&&p.status==='ATIVO'&&!p.checkout);
     const campRasc = db.anuncios.filter(a=>a.status!=='ATIVO');
@@ -273,7 +273,7 @@
         <td><div style="display:flex;gap:.6rem;align-items:center">${p.img?`<span style="width:36px;height:36px;border-radius:7px;flex:none;border:1px solid var(--line);background:url('${p.img}') center/cover, var(--surface-2)"></span>`:''}<div><div class="nome">${p.nome}</div><div style="font-size:.72rem;color:var(--ink-faint)" class="mono">${p.cat} · ANVISA ${p.anvisa||'—'}</div></div></div></td>
         <td><span class="pill ${v.tipo==='CASA'?'pill-casa':'pill-parc'}">${v.fantasia}</span></td>
         <td class="num">${p.de? '<span style="color:var(--ink-faint);text-decoration:line-through;font-size:.78rem">'+brl(p.de)+'</span><br>':''}<input class="price-inp" data-price="${p.id}" value="${p.por.toFixed(2)}"></td>
-        <td class="num" style="color:${p.estoque<=0?'var(--sale)':'inherit'}">${p.estoque}</td>
+        <td class="num">${(p.modo||'AUTOMATICO')==='SOB_CONSULTA'?'<span style=\'font-family:var(--font-mono,monospace);font-size:.6rem;letter-spacing:.05em;text-transform:uppercase;background:var(--primary-bg);color:var(--primary);padding:.2rem .45rem;border-radius:6px;white-space:nowrap\'>sob consulta</span>':('<span style=\'color:'+(p.estoque<=0?'var(--sale)':'inherit')+'\'>'+p.estoque+'</span>')}</td>
         <td><span class="pill ${p.status==='ATIVO'?'pill-on':'pill-off'}">${p.status.toLowerCase()}</span></td>
         <td style="text-align:right;white-space:nowrap"><button class="btn btn-sm" data-edit-prod="${p.id}">Editar</button> <button class="btn btn-sm btn-danger" data-del-prod="${p.id}">Remover</button></td>
       </tr>`;}).join('');
@@ -502,7 +502,7 @@
       field('prAnvisa','Registro ANVISA',`<input id="prAnvisa" value="${esc(p.anvisa)}" placeholder="80000000000">`,'11 dígitos, se exigir') +
       `<div class="two">`+field('prDe','Preço "de" (opcional)',`<input id="prDe" value="${p.de? p.de.toFixed(2):''}" placeholder="0.00">`,'preço cheio, riscado')+
       field('prPor','Preço "por" (R$)',`<input id="prPor" value="${p.por? p.por.toFixed(2):''}" placeholder="0.00">`,'',true)+`</div>`+
-      `<div class="two">`+field('prEst','Estoque',`<input id="prEst" type="number" min="0" value="${p.estoque??0}">`)+
+      field('prModo','Modo de venda',`<select id="prModo"><option value="AUTOMATICO"${(p.modo||'AUTOMATICO')==='AUTOMATICO'?' selected':''}>Automático — carrinho</option><option value="SOB_CONSULTA"${p.modo==='SOB_CONSULTA'?' selected':''}>Sob consulta — entre em contato</option></select>`,'Sob consulta não vende sozinho: o cliente fala com a gente. Não precisa de estoque.') + `<div class="two">`+field('prEst','Estoque',`<input id="prEst" type="number" min="0" value="${p.estoque??0}">`)+
       field('prStatus','Status',`<select id="prStatus"><option value="ATIVO"${p.status==='ATIVO'?' selected':''}>Ativo</option><option value="RASCUNHO"${p.status!=='ATIVO'?' selected':''}>Rascunho</option></select>`)+`</div>`+
       dropField('prImg','Foto do produto','Do próprio anúncio — arraste, cole (Ctrl+V) ou clique'),
       ()=>{ clearInvalid(); let ok=true;
@@ -513,7 +513,7 @@
         if(de && de<=por){ invalid('prDe','O "de" tem que ser maior que o "por"'); ok=false; }
         if(!ok) return false;
         const rec={ id:id||uid(), nome:val('prNome'), cat:val('prCat'), vendedor:val('prVend'), anvisa:val('prAnvisa'),
-          de:de?Math.round(de*100)/100:0, por:Math.round(por*100)/100, estoque:parseInt(val('prEst')||'0',10)||0, status:val('prStatus'), img:curProdImg };
+          de:de?Math.round(de*100)/100:0, por:Math.round(por*100)/100, estoque:parseInt(val('prEst')||'0',10)||0, status:val('prStatus'), modo:val('prModo')||'AUTOMATICO', img:curProdImg };
         if(id){ Object.assign(db.produtos.find(x=>x.id===id),rec); } else { db.produtos.push(rec); }
         save(); renderProdutos(); toast(id?'Produto salvo':'Produto criado');
       });
