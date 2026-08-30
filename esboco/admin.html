@@ -192,6 +192,8 @@
 
   // ---------- navegação ----------
   let sec = 'painel';
+  { var _h=(location.hash||'').replace('#',''); if(['painel','parceiros','produtos','anuncios','financeiro'].indexOf(_h)>=0) sec=_h; else if(window.__impN) sec='produtos'; }
+  document.querySelectorAll('.navitem').forEach(function(x){ x.classList.toggle('on', x.dataset.sec===sec); });
   document.querySelectorAll('.navitem').forEach(b=>b.addEventListener('click',()=>{
     document.querySelectorAll('.navitem').forEach(x=>x.classList.remove('on')); b.classList.add('on');
     sec = b.dataset.sec; render();

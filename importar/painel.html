@@ -112,7 +112,8 @@ $('#importar').addEventListener('click',()=>{ const aprov=itens.filter(x=>x.apro
   const mapped=aprov.map(x=>({nome:x.nome, cat:x.cat, por:x.preco, img:x.img, fonte:x.fonte, sku:x.sku}));
   try{ localStorage.setItem('diximportados.v1', JSON.stringify(mapped)); }
   catch(e){ toast('Não coube no navegador — aprove menos por vez'); return; }
-  toast(`${aprov.length} enviados pro admin → abra Produtos & Preços pra ver`); });
+  toast(`${aprov.length} importados → abrindo Produtos no admin…`);
+  setTimeout(()=>{ location.href = '../esboco/admin.html#produtos'; }, 950); });
 
 fetch('importados.json').then(r=>r.json()).then(render).catch(e=>{ $('#grid').innerHTML='<div class="loading">Não achei importados.json — rode o importador primeiro.</div>'; });
 </script>
