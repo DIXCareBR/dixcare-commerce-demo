@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dix Medical — Plataforma</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+  :root { --bg:#FAFBFD; --surface:#fff; --ink:#0A1622; --ink-soft:#45566A; --ink-faint:#7A8B9C; --line:#E6EBF1;
+    --primary:#01376B; --cta:#3DC04E; --shadow:0 2px 6px rgba(10,22,34,.05), 0 24px 48px -28px rgba(10,22,34,.35); }
+  @media (prefers-color-scheme:dark){ :root{ --bg:#080D14; --surface:#101822; --ink:#EAF0F7; --ink-soft:#A4B4C6; --ink-faint:#758699; --line:#212C39; --primary:#4E9BE0; --cta:#4FC96A; } }
+  * { box-sizing:border-box; } body { margin:0; background:var(--bg); color:var(--ink); font-family:"IBM Plex Sans",system-ui,sans-serif; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:2rem; }
+  .hub { max-width:56rem; width:100%; }
+  .plate { background:#fff; border-radius:12px; padding:.5rem .9rem; box-shadow:0 1px 4px rgba(1,55,107,.16); display:inline-flex; }
+  .plate img { height:34px; display:block; }
+  h1 { font-family:Archivo; font-weight:800; letter-spacing:-.03em; font-size:clamp(1.8rem,1.3rem+2vw,2.8rem); margin:1.4rem 0 .3rem; }
+  .lede { color:var(--ink-soft); font-size:1.05rem; max-width:44ch; }
+  .tag { font-family:"IBM Plex Mono",monospace; font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint); }
+  .grid { display:grid; grid-template-columns:1fr; gap:1.1rem; margin-top:2rem; }
+  @media (min-width:44rem){ .grid { grid-template-columns:1fr 1fr; } }
+  a.card { text-decoration:none; color:inherit; background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:1.5rem; box-shadow:var(--shadow); display:flex; flex-direction:column; gap:.4rem; transition:transform .15s, box-shadow .15s, border-color .15s; }
+  a.card:hover { transform:translateY(-4px); border-color:var(--primary); }
+  a.card .ic { width:44px; height:44px; border-radius:11px; background:color-mix(in srgb,var(--primary) 12%,transparent); color:var(--primary); display:flex; align-items:center; justify-content:center; margin-bottom:.5rem; }
+  a.card h2 { font-family:Archivo; font-weight:700; font-size:1.25rem; }
+  a.card p { color:var(--ink-soft); font-size:.9rem; margin:0; }
+  a.card .go { margin-top:.6rem; color:var(--cta); font-weight:600; font-size:.9rem; }
+  footer { margin-top:2rem; color:var(--ink-faint); font-size:.78rem; }
+</style>
+</head>
+<body>
+  <div class="hub">
+    <span class="plate"><img src="esboco/dixlogo.png" alt="Dix Medical"></span>
+    <p class="tag" style="margin-top:1.2rem">Plataforma · uso interno</p>
+    <h1>Dix Medical — Plataforma de vendas</h1>
+    <p class="lede">Produtos, serviços e parceiros num lugar só. Escolha por onde entrar.</p>
+    <div class="grid">
+      <a class="card" href="esboco/plataforma.html">
+        <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 9h18M7 21h10"/></svg></div>
+        <h2>Vitrine</h2>
+        <p>A cara pública da plataforma — produtos, serviços e parceiros.</p>
+        <span class="go">Abrir vitrine →</span>
+      </a>
+      <a class="card" href="esboco/produto.html">
+        <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 7l8-4 8 4v10l-8 4-8-4z"/><path d="M4 7l8 4 8-4M12 11v10"/></svg></div>
+        <h2>Ficha de produto</h2>
+        <p>Página de um produto com Buy Box (vendedor em destaque) e reputação.</p>
+        <span class="go">Ver ficha →</span>
+      </a>
+      <a class="card" href="esboco/editor.html">
+        <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 20h4L18 10l-4-4L4 16z"/><path d="M13 5l4 4"/></svg></div>
+        <h2>Editor visual</h2>
+        <p>Clique e altere, arraste para reordenar, solte a foto. Edição sem sofrer.</p>
+        <span class="go">Abrir editor →</span>
+      </a>
+      <a class="card" href="esboco/admin.html">
+        <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path d="M19 12a7 7 0 00-.1-1l2-1.5-2-3.4-2.3 1a7 7 0 00-1.7-1L14.5 2h-5l-.4 2.6a7 7 0 00-1.7 1l-2.3-1-2 3.4 2 1.5a7 7 0 000 2l-2 1.5 2 3.4 2.3-1a7 7 0 001.7 1l.4 2.6h5l.4-2.6a7 7 0 001.7-1l2.3 1 2-3.4-2-1.5c.1-.3.1-.7.1-1z"/></svg></div>
+        <h2>Admin de configuração</h2>
+        <p>Parceiros, produtos, preços, anúncios e financeiro. Para marketing e e-commerce.</p>
+        <span class="go">Abrir admin →</span>
+      </a>
+    </div>
+    <footer>Uso interno · Dix Medical · a versão de produção substitui os protótipos quando o backend estiver ligado.</footer>
+  </div>
+</body>
+</html>
