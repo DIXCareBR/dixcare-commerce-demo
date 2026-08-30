@@ -183,6 +183,9 @@
       if(add){ save(); window.__impN = add; }
     }catch(e){}
   })();
+  // cura dados antigos: produto sem modo definido. Parece importado (tem foto, sem ANVISA)
+  // => SOB_CONSULTA; o resto => AUTOMATICO. Roda uma vez, depois fica quieto.
+  (function backfillModo(){ var ch=false; db.produtos.forEach(function(p){ if(!p.modo){ p.modo=(p.img && !p.anvisa)?'SOB_CONSULTA':'AUTOMATICO'; ch=true; } }); if(ch) save(); })();
   function load(){ try{ const r = localStorage.getItem(KEY); if(r) return JSON.parse(r); }catch(e){} return JSON.parse(JSON.stringify(SEED)); }
   function save(){ try{ localStorage.setItem(KEY, JSON.stringify(db)); }catch(e){} }
   function uid(){ return 'x' + Math.random().toString(36).slice(2,8); }
