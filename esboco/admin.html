@@ -168,6 +168,21 @@
     cobrancaLigada: false,
   };
   let db = load();
+  // Produtos que o painel do importador aprovou entram aqui (mesma origem, localStorage).
+  // Casa Dix por padrao; nascem ATIVO; sem preco "de"; ANVISA em branco pra conferir.
+  (function mergeImportados(){
+    try{
+      var raw = localStorage.getItem('diximportados.v1'); if(!raw) return;
+      var arr = JSON.parse(raw); var nomes = new Set(db.produtos.map(function(p){return (p.nome||'').toLowerCase();}));
+      var add = 0;
+      arr.forEach(function(x){ var nm=(x.nome||'').trim(); if(!nm || nomes.has(nm.toLowerCase())) return;
+        db.produtos.push({ id:uid(), nome:nm, cat:x.cat||'', vendedor:'p_casa', anvisa:'',
+          de:0, por:Math.round((Number(x.por)||0)*100)/100, estoque:0, status:'ATIVO', img:x.img||'' });
+        nomes.add(nm.toLowerCase()); add++; });
+      localStorage.removeItem('diximportados.v1');
+      if(add){ save(); window.__impN = add; }
+    }catch(e){}
+  })();
   function load(){ try{ const r = localStorage.getItem(KEY); if(r) return JSON.parse(r); }catch(e){} return JSON.parse(JSON.stringify(SEED)); }
   function save(){ try{ localStorage.setItem(KEY, JSON.stringify(db)); }catch(e){} }
   function uid(){ return 'x' + Math.random().toString(36).slice(2,8); }
@@ -526,6 +541,7 @@
   }
 
   render();
+  if(window.__impN){ setTimeout(function(){ toast(window.__impN+' produto(s) importado(s) da loja'); }, 400); }
 })();
 </script>
 
