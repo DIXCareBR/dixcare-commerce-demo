@@ -233,6 +233,16 @@
   .chip:hover { border-color:var(--ink-faint); color:var(--ink); }
   .chip.on { background:var(--primary); border-color:var(--primary); color:#fff; }
   .sem-res { padding:3rem 1rem; text-align:center; color:var(--ink-faint); }
+
+  .loja-ctrl { display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap; font-size:.85rem; color:var(--ink-soft); margin-top:.2rem; }
+  .porpag select { font:inherit; font-size:.85rem; border:1px solid var(--line); border-radius:8px; padding:.3rem .5rem; background:var(--surface); color:var(--ink); margin:0 .35rem; cursor:pointer; }
+  .res-info { color:var(--ink-faint); font-variant-numeric:tabular-nums; }
+  .paginacao { display:flex; gap:.4rem; justify-content:center; align-items:center; flex-wrap:wrap; margin:2.2rem 0 .5rem; }
+  .pg { min-width:2.3rem; height:2.3rem; padding:0 .65rem; border:1px solid var(--line); background:var(--surface); color:var(--ink); border-radius:9px; font:inherit; font-weight:600; font-size:.88rem; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; transition:.12s; }
+  .pg:hover:not(:disabled) { border-color:var(--primary); color:var(--primary); }
+  .pg.on { background:var(--primary); color:#fff; border-color:var(--primary); }
+  .pg:disabled { opacity:.4; cursor:default; }
+  .pg-el { color:var(--ink-faint); padding:0 .2rem; }
 </style>
 
 <div class="proto">PROTÓTIPO PREMIUM · plataforma de vendas — produtos + serviços + parceiros · dados da Dix Medical reais, parceiros ilustrativos</div>
@@ -286,9 +296,14 @@
       <div class="loja-bar">
         <div class="busca-w"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg><input id="busca" type="search" placeholder="Buscar produto pelo nome…" autocomplete="off"></div>
         <div class="chips" id="chips"></div>
+        <div class="loja-ctrl">
+          <span class="res-info" id="resInfo"></span>
+          <label class="porpag">Mostrar <select id="porPagina"><option value="10">10</option><option value="20" selected>20</option><option value="40">40</option><option value="100">100</option></select> por página</label>
+        </div>
       </div>
       <div class="prod-grid" id="grade-prod"></div>
       <div class="sem-res hide" id="semRes">Nenhum produto encontrado. Tente outra palavra ou categoria.</div>
+      <nav class="paginacao" id="paginacao" aria-label="Páginas"></nav>
     </div>
   </section>
 
@@ -413,10 +428,9 @@
   const brl = v => 'R$ ' + v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
   const check = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l4 4 10-10"/></svg>';
 
-  // Loja REAL: catálogo com foto, busca e filtro por categoria
+  // Loja REAL: catálogo com foto, busca, filtro por categoria e paginação
   const cesta = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h2l2 12h11l2-8H7"/></svg>';
-  let ITENS = [];
-  let fCat = 'Todos';
+  let ITENS = [], fCat = 'Todos', perPage = 20, page = 1;
   const gEl = document.getElementById('grade-prod');
   const cardHTML = p => {
     const temPreco = p.preco > 0, consulta = p.modo === 'SOB_CONSULTA' || !temPreco;
@@ -430,11 +444,32 @@
       <div class="pr">${preco}</div>
       <button class="cmp">${cesta}${consulta?'Consultar':'Comprar'}</button></div></article>`;
   };
-  function renderLoja(){
+  const filtrada = () => {
     const q = (document.getElementById('busca').value||'').toLowerCase().trim();
-    const list = ITENS.filter(p => (fCat==='Todos' || p.cat===fCat) && (!q || p.nome.toLowerCase().includes(q)));
-    gEl.innerHTML = list.map(cardHTML).join('');
+    return ITENS.filter(p => (fCat==='Todos' || p.cat===fCat) && (!q || p.nome.toLowerCase().includes(q)));
+  };
+  function renderLoja(reset){
+    if(reset) page = 1;
+    const list = filtrada();
+    const totalP = Math.max(1, Math.ceil(list.length/perPage));
+    if(page > totalP) page = totalP;
+    const ini = (page-1)*perPage, slice = list.slice(ini, ini+perPage);
+    gEl.innerHTML = slice.map(cardHTML).join('');
     document.getElementById('semRes').classList.toggle('hide', list.length>0);
+    document.getElementById('resInfo').textContent = list.length ? `Mostrando ${ini+1}–${ini+slice.length} de ${list.length}` : '';
+    renderPag(totalP);
+  }
+  function renderPag(totalP){
+    const pag = document.getElementById('paginacao');
+    if(totalP <= 1){ pag.innerHTML=''; return; }
+    const set = new Set([1, totalP]);
+    for(let k=page-2;k<=page+2;k++) if(k>=1 && k<=totalP) set.add(k);
+    const ord = [...set].sort((a,b)=>a-b);
+    let out = `<button class="pg" data-p="${page-1}" ${page===1?'disabled':''} aria-label="Anterior">‹</button>`, prev = 0;
+    ord.forEach(n=>{ if(n-prev>1) out+='<span class="pg-el">…</span>'; out+=`<button class="pg${n===page?' on':''}" data-p="${n}">${n}</button>`; prev=n; });
+    out += `<button class="pg" data-p="${page+1}" ${page===totalP?'disabled':''} aria-label="Próxima">›</button>`;
+    pag.innerHTML = out;
+    pag.querySelectorAll('.pg[data-p]').forEach(b=>{ if(b.disabled) return; b.addEventListener('click',()=>{ const n=+b.dataset.p; if(n>=1 && n<=totalP && n!==page){ page=n; renderLoja(); document.getElementById('produtos').scrollIntoView({behavior:'smooth',block:'start'}); } }); });
   }
   fetch('catalogo.json').then(r=>r.json()).then(d=>{
     ITENS = d.itens;
@@ -446,10 +481,11 @@
       ordem.map(([c,n])=>`<button class="chip" data-c="${c}">${c} (${n})</button>`).join('');
     document.querySelectorAll('#chips .chip').forEach(b=>b.addEventListener('click',()=>{
       document.querySelectorAll('#chips .chip').forEach(x=>x.classList.remove('on')); b.classList.add('on');
-      fCat = b.dataset.c; renderLoja();
+      fCat = b.dataset.c; renderLoja(true);
       document.getElementById('produtos').scrollIntoView({behavior:'smooth',block:'start'});
     }));
-    document.getElementById('busca').addEventListener('input', renderLoja);
+    document.getElementById('busca').addEventListener('input', ()=>renderLoja(true));
+    document.getElementById('porPagina').addEventListener('change', e=>{ perPage = +e.target.value; renderLoja(true); });
     renderLoja();
   }).catch(()=>{ gEl.innerHTML = '<p style="color:var(--ink-faint)">Catálogo indisponível no momento.</p>'; });
 
