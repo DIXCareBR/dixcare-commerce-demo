@@ -285,6 +285,9 @@
   .shelf-track { display:flex; gap:1rem; overflow-x:auto; scroll-snap-type:x proximity; scrollbar-width:none; padding:.2rem .1rem 1rem; }
   .shelf-track::-webkit-scrollbar { display:none; }
   .shelf-track .prod { flex:0 0 auto; width:12.5rem; scroll-snap-align:start; }
+  .shelf-scroll.no-ov .sh-arrow { display:none; }
+  .grade { display:flex; flex-wrap:wrap; gap:1rem; padding:.2rem .1rem .4rem; }
+  .grade .prod { flex:1 1 12rem; max-width:16.5rem; }
   .sh-arrow { position:absolute; top:calc(50% - 1rem); transform:translateY(-50%); z-index:6; width:2.5rem; height:2.5rem; border-radius:50%; border:1px solid var(--line); background:var(--surface); color:var(--ink); font-size:1.3rem; line-height:1; cursor:pointer; box-shadow:var(--shadow); display:flex; align-items:center; justify-content:center; }
   .sh-arrow:hover { color:var(--primary); border-color:var(--primary); }
   .sh-prev { left:-.6rem; } .sh-next { right:-.6rem; }
@@ -540,16 +543,25 @@
     const cats={}; ITENS.forEach(p=>{ (cats[p.cat]=cats[p.cat]||[]).push(p); });
     const ordem=Object.entries(cats).sort((a,b)=>b[1].length-a[1].length);
     const sh=document.getElementById('shelves');
-    sh.innerHTML=ordem.map(([c,arr])=>`<section class="shelf">
+    const GRANDE=8;
+    const grandes=ordem.filter(([,arr])=>arr.length>=GRANDE);
+    const resto=ordem.filter(([,arr])=>arr.length<GRANDE).flatMap(([,arr])=>arr);
+    let html=grandes.map(([c,arr])=>`<section class="shelf">
       <div class="shelf-h"><h3>${c} <span>${arr.length}</span></h3><button class="ver-cat" data-cat="${c}">ver todos ›</button></div>
       <div class="shelf-scroll">
         <button class="sh-arrow sh-prev" aria-label="Voltar">‹</button>
         <div class="shelf-track">${arr.map(cardHTML).join('')}</div>
         <button class="sh-arrow sh-next" aria-label="Avançar">›</button>
       </div></section>`).join('');
+    if(resto.length){ html+=`<section class="shelf">
+      <div class="shelf-h"><h3>Mais equipamentos <span>${resto.length}</span></h3></div>
+      <div class="grade">${resto.map(cardHTML).join('')}</div></section>`; }
+    sh.innerHTML=html;
     sh.querySelectorAll('.shelf-scroll').forEach(sc=>{ const t=sc.querySelector('.shelf-track');
+      const sync=()=>sc.classList.toggle('no-ov', t.scrollWidth <= t.clientWidth+4);
       sc.querySelector('.sh-prev').addEventListener('click',()=>t.scrollBy({left:-t.clientWidth*0.85,behavior:'smooth'}));
-      sc.querySelector('.sh-next').addEventListener('click',()=>t.scrollBy({left:t.clientWidth*0.85,behavior:'smooth'})); });
+      sc.querySelector('.sh-next').addEventListener('click',()=>t.scrollBy({left:t.clientWidth*0.85,behavior:'smooth'}));
+      sync(); window.addEventListener('resize',sync); });
     sh.querySelectorAll('.ver-cat').forEach(b=>b.addEventListener('click',()=>{ fCat=b.dataset.cat; syncChips(); atualizar(true); document.getElementById('produtos').scrollIntoView({behavior:'smooth'}); }));
   }
   function featured(min){
