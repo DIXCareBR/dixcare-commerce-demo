@@ -98,9 +98,9 @@
   .btn-solid:hover { opacity:.88; }
 
   /* ---- hero ---- */
-  .hero { padding:clamp(1.8rem,1.4rem+2.5vw,3rem) 0 clamp(1.4rem,1rem+1.6vw,2.2rem); }
+  .hero { padding:clamp(1.4rem,1rem+1.6vw,2.2rem) 0 clamp(1rem,.8rem+1vw,1.6rem); }
   .hero .kicker { font-family:"IBM Plex Mono", monospace; font-size:.78rem; letter-spacing:.2em; text-transform:uppercase; color:var(--primary); }
-  .hero h1 { font-size:clamp(1.8rem,1.3rem+2.4vw,3rem); font-weight:900; line-height:1.02; margin:.7rem 0 0; max-width:18ch; }
+  .hero h1 { font-size:clamp(1.6rem,1.2rem+1.8vw,2.5rem); font-weight:900; line-height:1.02; margin:.7rem 0 0; max-width:18ch; }
   .hero h1 em { font-style:normal; color:var(--primary); }
   .hero .lede { font-size:clamp(1rem,.95rem+.3vw,1.2rem); color:var(--ink-soft); margin:1rem 0 0; max-width:50ch; line-height:1.45; }
   .hero .acts { margin-top:1.4rem; display:flex; gap:.9rem; flex-wrap:wrap; }
@@ -245,11 +245,26 @@
   .pg-el { color:var(--ink-faint); padding:0 .2rem; }
 
   .hero-grid { display:grid; grid-template-columns:1fr; gap:2rem; align-items:center; }
-  @media (min-width:58rem){ .hero-grid { grid-template-columns:1.05fr .95fr; gap:clamp(2rem,4vw,4rem); } }
+  @media (min-width:58rem){ .hero-grid { grid-template-columns:1.15fr .85fr; gap:clamp(2rem,4vw,4rem); } }
   .hero-vis { display:grid; grid-template-columns:1fr 1fr; gap:.9rem; }
   @media (max-width:58rem){ .hero-vis { display:none; } }
-  .hero-vis a { display:block; aspect-ratio:1/1; background:#fff center/contain no-repeat; border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow); padding:1.1rem; transition:transform .18s, box-shadow .18s; }
+  .hero-vis a { display:block; aspect-ratio:4/3; background:#fff center/contain no-repeat; border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow); padding:.8rem; transition:transform .18s, box-shadow .18s; }
   .hero-vis a:hover { transform:translateY(-5px) scale(1.02); box-shadow:0 20px 40px -20px rgba(1,55,107,.4); }
+
+  .carrossel-wrap { padding:.4rem 0 1.4rem; }
+  .car-head { display:flex; align-items:baseline; gap:.8rem; margin-bottom:.9rem; }
+  .car-head h2 { font-family:Archivo,sans-serif; font-weight:800; font-size:1.15rem; letter-spacing:-.02em; }
+  .car-head span { font-family:"IBM Plex Mono",monospace; font-size:.68rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faint); }
+  .carrossel { overflow:hidden; -webkit-mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent); mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent); }
+  .car-track { display:flex; gap:1rem; width:max-content; animation:rolar 55s linear infinite; }
+  .carrossel:hover .car-track { animation-play-state:paused; }
+  .car-card { flex:0 0 auto; width:186px; background:var(--surface); border:1px solid var(--line); border-radius:12px; overflow:hidden; text-decoration:none; color:inherit; transition:border-color .15s, transform .15s; }
+  .car-card:hover { border-color:var(--primary); transform:translateY(-3px); }
+  .car-fig { height:118px; background:#fff center/contain no-repeat; border-bottom:1px solid var(--line); }
+  .car-nome { font-size:.76rem; font-weight:600; padding:.5rem .6rem .1rem; line-height:1.25; height:2.5em; overflow:hidden; }
+  .car-preco { font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:.8rem; color:var(--cta-d); padding:.1rem .6rem .6rem; }
+  @keyframes rolar { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+  @media (prefers-reduced-motion:reduce){ .car-track { animation:none; } }
 </style>
 
 <div class="proto">PROTÓTIPO PREMIUM · plataforma de vendas — produtos + serviços + parceiros · dados da Dix Medical reais, parceiros ilustrativos</div>
@@ -289,6 +304,13 @@
         <div><div class="n">AFE</div><div class="l">vendedor oficial regularizado</div></div>
       </div>
     </div>
+  </section>
+
+  <!-- CARROSSEL -->
+  <section class="carrossel-wrap"><div class="wrap">
+    <div class="car-head"><h2>Destaques da Dix</h2><span>role para ver</span></div>
+  </div>
+  <div class="carrossel"><div class="car-track" id="carTrack"></div></div>
   </section>
 
   <!-- PRODUTOS -->
@@ -499,6 +521,13 @@
     }));
     document.getElementById('busca').addEventListener('input', ()=>renderLoja(true));
     document.getElementById('porPagina').addEventListener('change', e=>{ perPage = +e.target.value; renderLoja(true); });
+    // carrossel de destaques (variado)
+    const ct=document.getElementById('carTrack');
+    if(ct){ const porCat={}, dest=[];
+      [...ITENS].filter(x=>x.img).sort((a,b)=>b.preco-a.preco).forEach(x=>{ porCat[x.cat]=(porCat[x.cat]||0); if(porCat[x.cat]<2 && dest.length<12){ porCat[x.cat]++; dest.push(x); } });
+      const cardC=x=>`<a class="car-card" href="produto.html?p=${encodeURIComponent(x.p)}"><div class="car-fig" style="background-image:url('${x.img}')"></div><div class="car-nome">${x.nome}</div><div class="car-preco">${x.preco>0?brl(x.preco):'Sob consulta'}</div></a>`;
+      ct.innerHTML = [...dest, ...dest].map(cardC).join('');
+    }
     renderLoja();
   }).catch(()=>{ gEl.innerHTML = '<p style="color:var(--ink-faint)">Catálogo indisponível no momento.</p>'; });
 
