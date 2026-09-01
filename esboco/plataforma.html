@@ -1,3 +1,4 @@
+<meta charset="utf-8">
 <title>Plataforma Dix Medical</title>
 <meta name="description" content="A plataforma de vendas da saúde: equipamentos, consumíveis e serviços — PACS, telelaudo, teleconsulta, IA, locação. Da Dix Medical e de parceiros. Vendedor oficial com AFE.">
 <meta property="og:type" content="website">
@@ -291,11 +292,11 @@
     <div class="wrap">
       <div class="sec-head">
         <div>
-          <p class="eyebrow">Produtos · linha da casa</p>
-          <h2>Equipamento de emergência e diagnóstico</h2>
-          <p>Vendidos e entregues pela Dix Medical, com AFE própria.</p>
+          <p class="eyebrow">Catálogo · linha da casa</p>
+          <h2>Nossos produtos</h2>
+          <p>Equipamento, acessório e consumível — vendidos e entregues pela Dix Medical, com AFE própria. <b id="catCount">carregando…</b></p>
         </div>
-        <a href="#" class="link">Ver todo o catálogo →</a>
+        <a href="https://loja.dixmedical.com.br/" target="_blank" rel="noopener" class="link">Ver na loja Dix →</a>
       </div>
       <div class="prod-grid" id="grade-prod"></div>
     </div>
@@ -394,23 +395,24 @@
   const brl = v => 'R$ ' + v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
   const check = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l4 4 10-10"/></svg>';
 
-  const prod = [
-    { nome:'Desfibrilador DEA i3 Amoul', cat:'DEA · Emergência', ico:'DEA', de:7149.99, po:5285.00 },
-    { nome:'Desfibrilador DEA i5 Amoul — tela LCD 7"', cat:'DEA · Emergência', ico:'DEA', de:8199.99, po:6469.00 },
-    { nome:'Eletrocardiógrafo Lepu S120', cat:'Eletrocardiógrafo', ico:'ECG', po:8223.00 },
-    { nome:'Eletrocardiógrafo Lepu T180', cat:'Eletrocardiógrafo', ico:'ECG', po:11135.00 },
-    { nome:'Kit Transdutor de Pressão Invasiva (Abbott)', cat:'Consumíveis', ico:'CONSUMIVEL', po:118.00 },
-    { nome:'Braçadeira Reutilizável Adulto 46 × 66 cm', cat:'Acessórios', ico:'ACESSORIO', po:148.00 },
-  ];
-  document.getElementById('grade-prod').innerHTML = prod.map(p => {
-    const of = p.de ? '<span class="of">-'+Math.round((1-p.po/p.de)*100)+'%</span>' : '';
-    const de = p.de ? '<div class="de">'+brl(p.de)+'</div>' : '';
-    return `<article class="prod reveal" onclick="location.href='produto.html'" style="cursor:pointer"><div class="fig">${of}<svg width="82" height="82" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"> ${ICO[p.ico]||ICO.ACESSORIO}</svg></div>
-      <div class="body"><span class="cat">${p.cat}</span><h3>${p.nome}</h3>
-      <span class="vend"><span class="dot">${check}</span>Vendido por <b>Dix Medical</b></span>
-      <div class="pr">${de}<div class="po">${brl(p.po)} <small>à vista</small></div>${p.po>=300?`<div class="parcela">ou 12× de ${brl(p.po/12)} sem juros</div>`:""}</div>
-      <button class="cmp"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h2l2 12h11l2-8H7"/></svg>Comprar</button></div></article>`;
-  }).join('');
+  // Produtos REAIS da loja (fotos e preços puxados de loja.dixmedical.com.br)
+  fetch('catalogo.json').then(r=>r.json()).then(d=>{
+    const cesta = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h2l2 12h11l2-8H7"/></svg>';
+    document.getElementById('grade-prod').innerHTML = d.itens.map(p => {
+      const temPreco = p.preco > 0;
+      const consulta = p.modo === 'SOB_CONSULTA' || !temPreco;
+      const preco = temPreco
+        ? `<div class="po">${brl(p.preco)} <small>à vista</small></div>${p.preco>=300?`<div class="parcela">ou 12× de ${brl(p.preco/12)} sem juros</div>`:''}`
+        : `<div class="po" style="font-size:1.05rem;color:var(--ink-soft)">Sob consulta</div>`;
+      return `<article class="prod reveal in" onclick="location.href='produto.html?p=${encodeURIComponent(p.p)}'" style="cursor:pointer">
+        <div class="fig" style="background:#fff url('${p.img}') center/contain no-repeat;border:1px solid var(--line);min-height:180px;border-radius:12px 12px 0 0"></div>
+        <div class="body"><span class="cat">${p.cat}</span><h3>${p.nome}</h3>
+        <span class="vend"><span class="dot">${check}</span>Vendido por <b>Dix Medical</b></span>
+        <div class="pr">${preco}</div>
+        <button class="cmp">${cesta}${consulta?'Consultar':'Comprar'}</button></div></article>`;
+    }).join('');
+    const cnt = document.getElementById('catCount'); if(cnt) cnt.textContent = d.total + ' produtos';
+  }).catch(()=>{ document.getElementById('grade-prod').innerHTML = '<p style="color:var(--ink-faint)">Catálogo indisponível no momento.</p>'; });
 
   const serv = [
     { nome:'PACS em nuvem', ico:'<path d="M6 16a4 4 0 010-8 5 5 0 019.6-1.5A3.5 3.5 0 1118 16H6z"/><path d="M12 12v4M10 14l2 2 2-2"/>', desc:'Armazenamento de imagem com camada fria automática e visualizador incluído.', pr:'R$ 1.190', por:'/mês', fut:false },
