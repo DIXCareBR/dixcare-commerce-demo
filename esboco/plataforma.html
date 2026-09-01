@@ -98,19 +98,19 @@
   .btn-solid:hover { opacity:.88; }
 
   /* ---- hero ---- */
-  .hero { padding:clamp(3.5rem,3rem+6vw,8rem) 0 clamp(2.5rem,2rem+4vw,5rem); }
+  .hero { padding:clamp(1.8rem,1.4rem+2.5vw,3rem) 0 clamp(1.4rem,1rem+1.6vw,2.2rem); }
   .hero .kicker { font-family:"IBM Plex Mono", monospace; font-size:.78rem; letter-spacing:.2em; text-transform:uppercase; color:var(--primary); }
-  .hero h1 { font-size:clamp(2.6rem,1.6rem+5.4vw,6rem); font-weight:900; line-height:.98; margin:1.1rem 0 0; max-width:16ch; }
+  .hero h1 { font-size:clamp(1.8rem,1.3rem+2.4vw,3rem); font-weight:900; line-height:1.02; margin:.7rem 0 0; max-width:18ch; }
   .hero h1 em { font-style:normal; color:var(--primary); }
-  .hero .lede { font-size:clamp(1.1rem,1rem+.5vw,1.5rem); color:var(--ink-soft); margin:1.6rem 0 0; max-width:46ch; line-height:1.45; }
-  .hero .acts { margin-top:2.2rem; display:flex; gap:.9rem; flex-wrap:wrap; }
+  .hero .lede { font-size:clamp(1rem,.95rem+.3vw,1.2rem); color:var(--ink-soft); margin:1rem 0 0; max-width:50ch; line-height:1.45; }
+  .hero .acts { margin-top:1.4rem; display:flex; gap:.9rem; flex-wrap:wrap; }
   .cta-a { background:var(--accent); color:#fff; font-weight:600; padding:.9rem 1.7rem; border-radius:999px; font-size:1.02rem;
     display:inline-flex; align-items:center; gap:.5rem; box-shadow:0 12px 30px -12px rgba(224,57,59,.55); transition:transform .12s; }
   .cta-a:hover { transform:translateY(-2px); }
   .cta-b { padding:.9rem 1.5rem; border-radius:999px; font-size:1.02rem; font-weight:600; color:var(--ink);
     border:1.5px solid var(--line); display:inline-flex; align-items:center; gap:.5rem; }
   .cta-b:hover { border-color:var(--ink); }
-  .hero .metricas { margin-top:3.2rem; display:flex; gap:clamp(1.5rem,4vw,4rem); flex-wrap:wrap; border-top:1px solid var(--line); padding-top:1.6rem; }
+  .hero .metricas { margin-top:1.8rem; display:flex; gap:clamp(1.5rem,4vw,4rem); flex-wrap:wrap; border-top:1px solid var(--line); padding-top:1.6rem; }
   .hero .metricas div .n { font-family:Archivo; font-weight:800; font-size:1.8rem; letter-spacing:-.03em; }
   .hero .metricas div .l { font-size:.82rem; color:var(--ink-faint); margin-top:.15rem; }
 
@@ -136,25 +136,25 @@
   .pilar .tags span { font-size:.74rem; background:var(--surface-2); color:var(--ink-soft); padding:.28em .6em; border-radius:999px; }
 
   /* ---- produtos (premium) ---- */
-  .prod-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(15.5rem,1fr)); gap:1.4rem; }
+  .prod-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(13rem,1fr)); gap:1rem; }
   .prod { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden;
     display:flex; flex-direction:column; box-shadow:var(--shadow-sm); transition:transform .15s, box-shadow .15s, border-color .15s; }
   .prod:hover { transform:translateY(-5px); box-shadow:var(--shadow); border-color:var(--primary); }
-  .prod .fig { aspect-ratio:1/1; background:radial-gradient(120% 120% at 50% 30%, var(--surface-2), var(--surface));
+  .prod .fig { height:148px; background:radial-gradient(120% 120% at 50% 30%, var(--surface-2), var(--surface));
     display:flex; align-items:center; justify-content:center; color:var(--primary); position:relative; }
   .prod .fig .of { position:absolute; top:.9rem; left:.9rem; background:var(--sale); color:#fff; font-family:"IBM Plex Mono",monospace;
     font-size:.68rem; font-weight:600; padding:.24em .55em; border-radius:6px; }
-  .prod .body { padding:1.2rem 1.25rem 1.4rem; display:flex; flex-direction:column; gap:.55rem; flex:1; }
+  .prod .body { padding:.85rem .95rem 1rem; display:flex; flex-direction:column; gap:.4rem; flex:1; }
   .prod .cat { font-family:"IBM Plex Mono",monospace; font-size:.66rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faint); }
-  .prod h3 { font-size:1rem; font-weight:600; line-height:1.35; letter-spacing:-.01em; }
+  .prod h3 { font-size:.88rem; font-weight:600; line-height:1.3; letter-spacing:-.01em; }
   .prod .vend { font-size:.78rem; color:var(--ink-soft); display:flex; align-items:center; gap:.4rem; }
   .prod .vend .dot { width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none;background:var(--surface-2);color:var(--primary); }
   .prod .vend b { color:var(--ink); }
   .prod .pr { margin-top:auto; padding-top:.4rem; }
   .prod .pr .de { font-size:.8rem; color:var(--ink-faint); text-decoration:line-through; }
-  .prod .pr .po { font-family:Archivo; font-weight:800; font-size:1.4rem; letter-spacing:-.02em; font-variant-numeric:tabular-nums; }
+  .prod .pr .po { font-family:Archivo; font-weight:800; font-size:1.2rem; letter-spacing:-.02em; font-variant-numeric:tabular-nums; }
   .prod .pr .po small { font-family:"IBM Plex Sans"; font-weight:500; font-size:.72rem; color:var(--ink-faint); }
-  .prod .cmp { margin-top:.9rem; background:var(--surface-2); color:var(--ink); font-weight:600; font-size:.86rem; padding:.65rem; border-radius:10px; display:flex; align-items:center; justify-content:center; gap:.4rem; transition:background .12s; }
+  .prod .cmp { margin-top:.6rem; background:var(--surface-2); color:var(--ink); font-weight:600; font-size:.8rem; padding:.5rem; border-radius:10px; display:flex; align-items:center; justify-content:center; gap:.4rem; transition:background .12s; }
   .prod .cmp:hover { background:var(--primary); color:#fff; }
 
   /* ---- serviços (editorial) ---- */
@@ -222,6 +222,17 @@
   .foot a { display:block; padding:.22rem 0; }
   .foot a:hover { color:var(--primary); }
   .foot-bar { border-top:1px solid var(--line); padding:1.2rem 0; font-size:.76rem; color:var(--ink-faint); }
+
+  /* barra de loja: busca + categorias */
+  .loja-bar { display:flex; flex-direction:column; gap:1rem; margin-bottom:1.6rem; }
+  .busca-w { display:flex; align-items:center; gap:.6rem; background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:.75rem 1rem; box-shadow:var(--shadow); max-width:34rem; }
+  .busca-w svg { color:var(--ink-faint); flex:none; }
+  .busca-w input { border:0; background:none; outline:none; font:inherit; font-size:1rem; color:var(--ink); width:100%; }
+  .chips { display:flex; gap:.5rem; flex-wrap:wrap; }
+  .chip { font-family:"IBM Plex Sans",sans-serif; font-size:.84rem; font-weight:600; padding:.45rem .85rem; border-radius:999px; border:1px solid var(--line); background:var(--surface); color:var(--ink-soft); cursor:pointer; white-space:nowrap; transition:.12s; }
+  .chip:hover { border-color:var(--ink-faint); color:var(--ink); }
+  .chip.on { background:var(--primary); border-color:var(--primary); color:#fff; }
+  .sem-res { padding:3rem 1rem; text-align:center; color:var(--ink-faint); }
 </style>
 
 <div class="proto">PROTÓTIPO PREMIUM · plataforma de vendas — produtos + serviços + parceiros · dados da Dix Medical reais, parceiros ilustrativos</div>
@@ -261,6 +272,26 @@
     </div>
   </section>
 
+  <!-- PRODUTOS -->
+  <section class="bloco" id="produtos">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="eyebrow">Catálogo · linha da casa</p>
+          <h2>Nossos produtos</h2>
+          <p>Equipamento, acessório e consumível — vendidos e entregues pela Dix Medical, com AFE própria. <b id="catCount">carregando…</b></p>
+        </div>
+        <a href="https://loja.dixmedical.com.br/" target="_blank" rel="noopener" class="link">Ver na loja Dix →</a>
+      </div>
+      <div class="loja-bar">
+        <div class="busca-w"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg><input id="busca" type="search" placeholder="Buscar produto pelo nome…" autocomplete="off"></div>
+        <div class="chips" id="chips"></div>
+      </div>
+      <div class="prod-grid" id="grade-prod"></div>
+      <div class="sem-res hide" id="semRes">Nenhum produto encontrado. Tente outra palavra ou categoria.</div>
+    </div>
+  </section>
+
   <!-- PILARES -->
   <section class="bloco">
     <div class="wrap">
@@ -287,20 +318,7 @@
     </div>
   </section>
 
-  <!-- PRODUTOS -->
-  <section class="bloco" id="produtos">
-    <div class="wrap">
-      <div class="sec-head">
-        <div>
-          <p class="eyebrow">Catálogo · linha da casa</p>
-          <h2>Nossos produtos</h2>
-          <p>Equipamento, acessório e consumível — vendidos e entregues pela Dix Medical, com AFE própria. <b id="catCount">carregando…</b></p>
-        </div>
-        <a href="https://loja.dixmedical.com.br/" target="_blank" rel="noopener" class="link">Ver na loja Dix →</a>
-      </div>
-      <div class="prod-grid" id="grade-prod"></div>
-    </div>
-  </section>
+
 
   <!-- SERVIÇOS -->
   <section class="bloco" id="servicos">
@@ -395,24 +413,45 @@
   const brl = v => 'R$ ' + v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
   const check = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l4 4 10-10"/></svg>';
 
-  // Produtos REAIS da loja (fotos e preços puxados de loja.dixmedical.com.br)
+  // Loja REAL: catálogo com foto, busca e filtro por categoria
+  const cesta = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h2l2 12h11l2-8H7"/></svg>';
+  let ITENS = [];
+  let fCat = 'Todos';
+  const gEl = document.getElementById('grade-prod');
+  const cardHTML = p => {
+    const temPreco = p.preco > 0, consulta = p.modo === 'SOB_CONSULTA' || !temPreco;
+    const preco = temPreco
+      ? `<div class="po">${brl(p.preco)} <small>à vista</small></div>${p.preco>=300?`<div class="parcela">ou 12× de ${brl(p.preco/12)} sem juros</div>`:''}`
+      : `<div class="po" style="font-size:1.05rem;color:var(--ink-soft)">Sob consulta</div>`;
+    return `<article class="prod reveal in" onclick="location.href='produto.html?p=${encodeURIComponent(p.p)}'" style="cursor:pointer">
+      <div class="fig" style="background:#fff url('${p.img}') center/contain no-repeat;border:1px solid var(--line);border-radius:12px 12px 0 0"></div>
+      <div class="body"><span class="cat">${p.cat}</span><h3>${p.nome}</h3>
+      <span class="vend"><span class="dot">${check}</span>Vendido por <b>Dix Medical</b></span>
+      <div class="pr">${preco}</div>
+      <button class="cmp">${cesta}${consulta?'Consultar':'Comprar'}</button></div></article>`;
+  };
+  function renderLoja(){
+    const q = (document.getElementById('busca').value||'').toLowerCase().trim();
+    const list = ITENS.filter(p => (fCat==='Todos' || p.cat===fCat) && (!q || p.nome.toLowerCase().includes(q)));
+    gEl.innerHTML = list.map(cardHTML).join('');
+    document.getElementById('semRes').classList.toggle('hide', list.length>0);
+  }
   fetch('catalogo.json').then(r=>r.json()).then(d=>{
-    const cesta = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h2l2 12h11l2-8H7"/></svg>';
-    document.getElementById('grade-prod').innerHTML = d.itens.map(p => {
-      const temPreco = p.preco > 0;
-      const consulta = p.modo === 'SOB_CONSULTA' || !temPreco;
-      const preco = temPreco
-        ? `<div class="po">${brl(p.preco)} <small>à vista</small></div>${p.preco>=300?`<div class="parcela">ou 12× de ${brl(p.preco/12)} sem juros</div>`:''}`
-        : `<div class="po" style="font-size:1.05rem;color:var(--ink-soft)">Sob consulta</div>`;
-      return `<article class="prod reveal in" onclick="location.href='produto.html?p=${encodeURIComponent(p.p)}'" style="cursor:pointer">
-        <div class="fig" style="background:#fff url('${p.img}') center/contain no-repeat;border:1px solid var(--line);min-height:180px;border-radius:12px 12px 0 0"></div>
-        <div class="body"><span class="cat">${p.cat}</span><h3>${p.nome}</h3>
-        <span class="vend"><span class="dot">${check}</span>Vendido por <b>Dix Medical</b></span>
-        <div class="pr">${preco}</div>
-        <button class="cmp">${cesta}${consulta?'Consultar':'Comprar'}</button></div></article>`;
-    }).join('');
+    ITENS = d.itens;
     const cnt = document.getElementById('catCount'); if(cnt) cnt.textContent = d.total + ' produtos';
-  }).catch(()=>{ document.getElementById('grade-prod').innerHTML = '<p style="color:var(--ink-faint)">Catálogo indisponível no momento.</p>'; });
+    const cats = {}; d.itens.forEach(p=>cats[p.cat]=(cats[p.cat]||0)+1);
+    const ordem = Object.entries(cats).sort((a,b)=>b[1]-a[1]);
+    document.getElementById('chips').innerHTML =
+      `<button class="chip on" data-c="Todos">Todos (${d.total})</button>` +
+      ordem.map(([c,n])=>`<button class="chip" data-c="${c}">${c} (${n})</button>`).join('');
+    document.querySelectorAll('#chips .chip').forEach(b=>b.addEventListener('click',()=>{
+      document.querySelectorAll('#chips .chip').forEach(x=>x.classList.remove('on')); b.classList.add('on');
+      fCat = b.dataset.c; renderLoja();
+      document.getElementById('produtos').scrollIntoView({behavior:'smooth',block:'start'});
+    }));
+    document.getElementById('busca').addEventListener('input', renderLoja);
+    renderLoja();
+  }).catch(()=>{ gEl.innerHTML = '<p style="color:var(--ink-faint)">Catálogo indisponível no momento.</p>'; });
 
   const serv = [
     { nome:'PACS em nuvem', ico:'<path d="M6 16a4 4 0 010-8 5 5 0 019.6-1.5A3.5 3.5 0 1118 16H6z"/><path d="M12 12v4M10 14l2 2 2-2"/>', desc:'Armazenamento de imagem com camada fria automática e visualizador incluído.', pr:'R$ 1.190', por:'/mês', fut:false },
