@@ -35,14 +35,14 @@
 
 <style>
   :root {
-    --bg:        #FAFBFD;
+    --bg:        #F5F8FC;
     --surface:   #FFFFFF;
-    --surface-2: #F1F4F8;
-    --ink:       #0A1622;
-    --ink-soft:  #45566A;
-    --ink-faint: #7A8B9C;
-    --line:      #E6EBF1;
-    --line-soft: #EFF3F7;
+    --surface-2: #EEF3F9;
+    --ink:       #16222F;
+    --ink-soft:  #51627A;
+    --ink-faint: #8593A4;
+    --line:      #E6ECF4;
+    --line-soft: #F0F4F9;
     --primary:   #01376B;
     --primary-2: #1668B0;
     --accent:    #3DC04E;
@@ -56,23 +56,23 @@
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --bg:#080D14; --surface:#101822; --surface-2:#18222E;
-      --ink:#EAF0F7; --ink-soft:#A4B4C6; --ink-faint:#758699;
-      --line:#212C39; --line-soft:#18222E;
-      --primary:#4E9BE0; --primary-2:#6FB0EC; --accent:#4FC96A; --accent-d:#3EB157; --sale:#F0605F;
-      --ok:#4FBF89; --gold:#D9AE5B;
-      --shadow-sm:0 1px 2px rgba(0,0,0,.4), 0 8px 20px -14px rgba(0,0,0,.8);
-      --shadow:0 2px 6px rgba(0,0,0,.5), 0 30px 56px -30px rgba(0,0,0,.95);
+      --bg:#F5F8FC; --surface:#FFFFFF; --surface-2:#EEF3F9;
+      --ink:#16222F; --ink-soft:#51627A; --ink-faint:#8593A4;
+      --line:#E6ECF4; --line-soft:#F0F4F9;
+      --primary:#01376B; --primary-2:#1668B0; --accent:#3DC04E; --accent-d:#33A845; --sale:#E0393B;
+      --ok:#16855A; --gold:#B98A2E;
+      --shadow-sm:0 1px 2px rgba(10,22,34,.04), 0 6px 16px -12px rgba(10,22,34,.2);
+      --shadow:0 2px 6px rgba(10,22,34,.05), 0 24px 48px -28px rgba(10,22,34,.35);
     }
   }
   :root[data-theme="dark"] {
-    --bg:#080D14; --surface:#101822; --surface-2:#18222E;
-    --ink:#EAF0F7; --ink-soft:#A4B4C6; --ink-faint:#758699;
-    --line:#212C39; --line-soft:#18222E;
-    --primary:#4E9BE0; --primary-2:#6FB0EC; --accent:#4FC96A; --accent-d:#3EB157; --sale:#F0605F;
-    --ok:#4FBF89; --gold:#D9AE5B;
-    --shadow-sm:0 1px 2px rgba(0,0,0,.4), 0 8px 20px -14px rgba(0,0,0,.8);
-    --shadow:0 2px 6px rgba(0,0,0,.5), 0 30px 56px -30px rgba(0,0,0,.95);
+    --bg:#F5F8FC; --surface:#FFFFFF; --surface-2:#EEF3F9;
+    --ink:#16222F; --ink-soft:#51627A; --ink-faint:#8593A4;
+    --line:#E6ECF4; --line-soft:#F0F4F9;
+    --primary:#01376B; --primary-2:#1668B0; --accent:#3DC04E; --accent-d:#33A845; --sale:#E0393B;
+    --ok:#16855A; --gold:#B98A2E;
+    --shadow-sm:0 1px 2px rgba(10,22,34,.04), 0 6px 16px -12px rgba(10,22,34,.2);
+    --shadow:0 2px 6px rgba(10,22,34,.05), 0 24px 48px -28px rgba(10,22,34,.35);
   }
 
   * { box-sizing:border-box; }
@@ -147,8 +147,8 @@
   .hero .metricas div .l { font-size:.82rem; color:var(--ink-faint); margin-top:.15rem; }
 
   /* ---- section base ---- */
-  section.bloco { padding:clamp(2.5rem,2rem+3vw,5rem) 0; }
-  .sec-head { display:flex; align-items:flex-end; justify-content:space-between; gap:1.5rem; flex-wrap:wrap; margin-bottom:2.2rem; }
+  section.bloco { padding:clamp(1.6rem,1.2rem+2vw,3rem) 0; }
+  .sec-head { display:flex; align-items:flex-end; justify-content:space-between; gap:1.5rem; flex-wrap:wrap; margin-bottom:1.3rem; }
   .sec-head .eyebrow { font-family:"IBM Plex Mono", monospace; font-size:.74rem; letter-spacing:.16em; text-transform:uppercase; color:var(--primary); }
   .sec-head h2 { font-size:clamp(1.7rem,1.3rem+1.8vw,2.8rem); font-weight:800; margin-top:.5rem; max-width:20ch; }
   .sec-head p { font-size:1rem; color:var(--ink-soft); margin:.6rem 0 0; max-width:46ch; }
@@ -224,7 +224,7 @@
     color:var(--ok); background:color-mix(in srgb,var(--ok) 15%,var(--surface)); padding:.3em .7em; border-radius:999px; box-shadow:var(--shadow-sm); }
 
   /* ---- parceiros ---- */
-  .parc { background:var(--ink); color:var(--bg); border-radius:calc(var(--radius) + 6px); padding:clamp(2rem,1.5rem+3vw,3.5rem);
+  .parc { background:var(--primary); color:#fff; border-radius:calc(var(--radius) + 6px); padding:clamp(2rem,1.5rem+3vw,3.5rem);
     display:grid; grid-template-columns:1fr; gap:2rem; align-items:center; }
   @media (min-width:56rem){ .parc { grid-template-columns:1.1fr 1fr; } }
   .parc h2 { font-size:clamp(1.7rem,1.3rem+2vw,2.8rem); font-weight:800; }
