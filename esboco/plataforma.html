@@ -335,7 +335,7 @@
 
   <!-- CARROSSEL -->
   <section class="carrossel-wrap"><div class="wrap">
-    <div class="car-head"><h2>Destaques da Dix</h2><span>role para ver</span></div>
+    <div class="car-head"><h2>Em destaque</h2><span>role para ver</span></div>
   </div>
   <div class="carrossel"><div class="car-track" id="carTrack"></div></div>
   </section>
@@ -345,9 +345,9 @@
     <div class="wrap">
       <div class="sec-head">
         <div>
-          <p class="eyebrow">Catálogo · linha da casa</p>
-          <h2>Nossos produtos</h2>
-          <p>Equipamento, acessório e consumível — vendidos e entregues pela Dix Medical, com AFE própria. <b id="catCount">carregando…</b></p>
+          <p class="eyebrow">Catálogo · Dix e parceiros</p>
+          <h2>Produtos</h2>
+          <p>Equipamento, acessório e consumível. Cada item mostra o vendedor — Dix Medical (com AFE própria) ou parceiro. <b id="catCount">carregando…</b></p>
         </div>
         <a href="https://loja.dixmedical.com.br/" target="_blank" rel="noopener" class="link">Ver na loja Dix →</a>
       </div>
@@ -483,7 +483,7 @@
         <p style="font-size:.82rem;color:var(--ink-faint);max-width:26ch">A plataforma de produtos e serviços da saúde. Vendedor oficial com AFE.</p>
       </div>
       <div><h4>Produtos</h4><a href="#">DEA</a><a href="#">Eletrocardiógrafo</a><a href="#">Monitores</a><a href="#">Consumíveis</a></div>
-      <div><h4>Serviços</h4><a href="#">PACS</a><a href="#">Telelaudo</a><a href="#">Teleconsulta</a><a href="#">Locação</a></div>
+      <div><h4>Sistemas &amp; SaaS</h4><a href="#sistemas">PACS</a><a href="#sistemas">Laudo à distância</a><a href="#sistemas">Teleconsulta</a><a href="#sistemas">IA clínica</a></div>
       <div><h4>Parceiros</h4><a href="#">Seja um parceiro</a><a href="#">Como funciona</a><a href="#">Comissão e taxa</a></div>
       <div><h4>Atendimento</h4><a href="#">(11) 94316-3804</a><a href="#">contato@dixmedical.com.br</a><a href="#">Para clínicas</a></div>
     </div>
@@ -514,7 +514,7 @@
     return `<article class="prod reveal in" onclick="location.href='produto.html?p=${encodeURIComponent(p.p)}'" style="cursor:pointer">
       <div class="fig" style="background:#fff url('${p.img}') center/contain no-repeat;border:1px solid var(--line);border-radius:12px 12px 0 0"></div>
       <div class="body"><span class="cat">${p.cat}</span><h3>${p.nome}</h3>
-      <span class="vend"><span class="dot">${check}</span>Vendido por <b>Dix Medical</b></span>
+      <span class="vend"><span class="dot">${check}</span>Vendido por <b>${p.vendedor||'Dix Medical'}</b></span>
       <div class="pr">${preco}</div>
       <button class="cmp">${cesta}${consulta?'Consultar':'Comprar'}</button></div></article>`;
   };
@@ -620,10 +620,9 @@
     { nome:'Laudo à distância', ico:'<path d="M4 5h16v11H4z"/><path d="M8 20h8M9 9l2 2 4-4"/>', desc:'Laudo assinado por especialista, com prazo por prioridade. Integra com o PACS.', pr:'R$ 48', por:'/laudo', fut:true },
     { nome:'Teleconsulta', ico:'<rect x="3" y="5" width="18" height="12" rx="2"/><path d="M8 21h8M12 17v4M8 11l2 2 4-4"/>', desc:'Sala com link por paciente, registro direto no prontuário da clínica.', pr:'R$ 390', por:'/mês', fut:true },
     { nome:'IA clínica', ico:'<circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-5"/>', desc:'Pré-triagem de imagem e apoio ao médico. Nunca emite laudo — sinaliza pro profissional.', pr:'R$ 690', por:'/mês', fut:true },
-    { nome:'Financeiro &amp; gestão', ico:'<path d="M4 20V4M4 20h16"/><rect x="7" y="12" width="2.6" height="5"/><rect x="11" y="9" width="2.6" height="8"/><rect x="15" y="14" width="2.6" height="3"/>', desc:'Caixa, cobrança, repasse e conciliação da clínica num sistema só.', pr:'sob consulta', por:'', fut:true },
+    { nome:'Cobrança e caixa da clínica', ico:'<path d="M4 20V4M4 20h16"/><rect x="7" y="12" width="2.6" height="5"/><rect x="11" y="9" width="2.6" height="8"/><rect x="15" y="14" width="2.6" height="3"/>', desc:'Caixa, cobrança, repasse e conciliação da clínica num sistema só.', pr:'sob consulta', por:'', fut:true },
     { nome:'CRM do paciente', ico:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="10" r="2"/><path d="M8.5 16c.4-2 1.9-3 3.5-3s3.1 1 3.5 3"/>', desc:'O ciclo do paciente — lead, pré, atendimento e pós — numa tela.', pr:'sob consulta', por:'', fut:true },
     { nome:'Engenharia clínica', ico:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1l2.1-2.1M17 7l2.1-2.1"/>', desc:'Inventário, calibração e ordem de serviço dos equipamentos.', pr:'sob consulta', por:'', fut:true },
-    { nome:'Segurança &amp; LGPD', ico:'<path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z"/><path d="M9 12l2 2 4-4"/>', desc:'Acesso, trilha e proteção do dado do paciente conforme a lei.', pr:'sob consulta', por:'', fut:true },
   ];
   // PISTA 2 — profissionais & mão de obra: quem PRESTA o serviço (terceirização)
   const profissionais = [
