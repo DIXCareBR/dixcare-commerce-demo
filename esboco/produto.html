@@ -1,6 +1,11 @@
 <title>Produto — Dix Medical</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#01376B">
+<meta property="og:type" content="product">
+<meta property="og:site_name" content="Dix Medical">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="description" content="Desfibrilador Externo Automático DEA i3 Amoul — vendido e entregue pela Dix Medical, vendedor oficial com AFE. Compare ofertas.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -158,6 +163,14 @@
     window.__CATALOGO = d.itens;
     const temPreco = prod.preco>0, sob = prod.modo==='SOB_CONSULTA' || !temPreco;
     document.title = prod.nome + ' — Dix Medical';
+    (function(){ try{
+      const url='https://loja.dixcare.com.br/produto.html?p='+encodeURIComponent(prod.p||'');
+      const desc=(prod.nome||'')+' — '+(prod.preco>0?('a partir de R$ '+Number(prod.preco).toLocaleString('pt-BR')):'sob consulta')+'. Vendido pela Dix Medical, vendedor oficial com AFE. Preço, frete e prazo na hora.';
+      const md=document.head.querySelector('meta[name=description]'); if(md) md.setAttribute('content',desc);
+      let c=document.head.querySelector('link[rel=canonical]'); if(!c){c=document.createElement('link');c.rel='canonical';document.head.appendChild(c);} c.href=url;
+      const ld={"@context":"https://schema.org","@type":"Product","name":prod.nome,"category":prod.cat,"image":prod.img||undefined,"offers":{"@type":"Offer","priceCurrency":"BRL","price":(prod.preco>0?Number(prod.preco).toFixed(2):undefined),"availability":"https://schema.org/InStock","seller":{"@type":"Organization","name":"Dix Medical"},"url":url}};
+      const sc=document.createElement('script'); sc.type='application/ld+json'; sc.textContent=JSON.stringify(ld); document.head.appendChild(sc);
+    }catch(e){} })();
     const gal=document.querySelector('.gal'); if(gal){ gal.style.background='#fff'; gal.style.padding='1rem'; gal.innerHTML = `<img src="${prod.img}" alt="${prod.nome}" style="max-width:100%;max-height:340px;object-fit:contain;display:block;margin:0 auto">`; }
     document.querySelector('.cat').textContent = prod.cat;
     document.querySelector('h1.nome').textContent = prod.nome;

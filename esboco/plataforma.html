@@ -1,13 +1,27 @@
 <meta charset="utf-8">
-<title>Plataforma Dix Medical</title>
-<meta name="description" content="A plataforma de vendas da saúde: equipamentos, consumíveis e serviços — PACS, telelaudo, teleconsulta, IA, locação. Da Dix Medical e de parceiros. Vendedor oficial com AFE.">
+<title>Dix Medical — Equipamentos, consumíveis e serviços para clínicas | A plataforma da saúde</title>
+<meta name="description" content="Compre equipamentos e consumíveis médicos e contrate serviços — PACS, telelaudo, teleconsulta, IA clínica, locação e mão de obra — num lugar só. Da Dix Medical e de parceiros, vendedor oficial com AFE. Preço, frete e prazo na hora.">
+<meta name="keywords" content="equipamentos hospitalares, equipamento médico, consumíveis médicos, loja médica, desfibrilador DEA, monitor multiparâmetro, eletrocardiógrafo, aparelho de anestesia, PACS, telelaudo, teleconsulta, locação de equipamento médico, ambulância, Dix Medical">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#01376B">
+<meta name="author" content="Dix Medical">
+<link rel="canonical" href="https://loja.dixcare.com.br/">
+<meta property="og:url" content="https://loja.dixcare.com.br/">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://loja.dixmedical.com.br/image/catalog/logo/nova-logo-dixmedical.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Dix Medical — a plataforma da saúde">
+<meta name="twitter:description" content="Equipamentos, consumíveis e serviços para clínicas, num lugar só. Preço, frete e prazo na hora.">
+<meta name="twitter:image" content="https://loja.dixmedical.com.br/image/catalog/logo/nova-logo-dixmedical.png">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Dix Medical">
 <meta property="og:title" content="Dix Medical — a plataforma da saúde">
 <meta property="og:description" content="Tudo que a sua clínica compra e contrata, num lugar só. Produtos e serviços, da casa e de parceiros.">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
- {"@type":"Organization","name":"Dix Medical","url":"https://dixmedical.com.br","logo":"https://loja.dixmedical.com.br/image/catalog/logo/nova-logo-dixmedical.png","telephone":"+55-11-94316-3804","email":"contato@dixmedical.com.br"},
+ {"@type":"WebSite","@id":"https://loja.dixcare.com.br/#site","name":"Dix Medical","url":"https://loja.dixcare.com.br/","inLanguage":"pt-BR","potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://loja.dixcare.com.br/?q={search_term_string}"},"query-input":"required name=search_term_string"}},
+ {"@type":"Organization","@id":"https://loja.dixcare.com.br/#org","name":"Dix Medical","url":"https://dixmedical.com.br","logo":"https://loja.dixmedical.com.br/image/catalog/logo/nova-logo-dixmedical.png","telephone":"+55-11-94316-3804","email":"contato@dixmedical.com.br","areaServed":"BR","sameAs":["https://www.instagram.com/dixmedical/","https://www.linkedin.com/company/dixmedical/","https://loja.dixmedical.com.br/"],"contactPoint":{"@type":"ContactPoint","telephone":"+55-11-94316-3804","contactType":"sales","areaServed":"BR","availableLanguage":"Portuguese"}},
+ {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://loja.dixcare.com.br/"},{"@type":"ListItem","position":2,"name":"Produtos","item":"https://loja.dixcare.com.br/#produtos"},{"@type":"ListItem","position":3,"name":"Sistemas & SaaS","item":"https://loja.dixcare.com.br/#sistemas"},{"@type":"ListItem","position":4,"name":"Locação","item":"https://loja.dixcare.com.br/#locacao"},{"@type":"ListItem","position":5,"name":"Profissionais","item":"https://loja.dixcare.com.br/#profissionais"}]},
  {"@type":"Product","name":"Desfibrilador Externo Automático DEA i3 Amoul","category":"DEA","brand":{"@type":"Brand","name":"Amoul"},"offers":{"@type":"Offer","price":"5285.00","priceCurrency":"BRL","availability":"https://schema.org/InStock","seller":{"@type":"Organization","name":"Dix Medical"}}},
  {"@type":"Product","name":"Desfibrilador DEA i5 Amoul tela LCD 7 pol","category":"DEA","brand":{"@type":"Brand","name":"Amoul"},"offers":{"@type":"Offer","price":"6469.00","priceCurrency":"BRL","availability":"https://schema.org/InStock","seller":{"@type":"Organization","name":"Dix Medical"}}},
  {"@type":"Product","name":"Eletrocardiógrafo Lepu S120","category":"Eletrocardiógrafo","brand":{"@type":"Brand","name":"Lepu"},"offers":{"@type":"Offer","price":"8223.00","priceCurrency":"BRL","availability":"https://schema.org/InStock","seller":{"@type":"Organization","name":"Dix Medical"}}},
@@ -650,6 +664,7 @@
       document.getElementById('produtos').scrollIntoView({behavior:'smooth',block:'start'});
     }));
     document.getElementById('busca').addEventListener('input', ()=>atualizar(true));
+    try { const q0 = new URLSearchParams(location.search).get('q'); if (q0) { const bi = document.getElementById('busca'); bi.value = q0; atualizar(true); document.getElementById('produtos').scrollIntoView(); } } catch(e){}
     document.querySelectorAll('#segOrig .sg').forEach(b=>b.addEventListener('click',()=>{
       document.querySelectorAll('#segOrig .sg').forEach(x=>x.classList.remove('on')); b.classList.add('on');
       fOrig = b.dataset.o; atualizar(true);
