@@ -529,6 +529,7 @@
   <div class="wrap"><div class="foot-bar">Protótipo premium · plataforma de vendas · dados da Dix Medical reais · parceiros ilustrativos · 30 ago 2026</div></div>
 </footer>
 
+<script src="cart.js"></script>
 <script>
 (function () {
   const ICO = {
@@ -554,7 +555,7 @@
       <div class="body"><span class="cat">${p.cat}</span><h3>${p.nome}</h3>
       <span class="vend"><span class="dot">${check}</span>Vendido por <b>${p.vendedor||'Dix Medical'}</b></span>
       <div class="pr">${preco}</div>
-      <button class="cmp">${cesta}${consulta?'Consultar':'Comprar'}</button></div></article>`;
+      <button class="cmp" onclick="event.stopPropagation(); ${consulta?`Cart.consult('${p.p}')`:`Cart.add('${p.p}')`}">${cesta}${consulta?'Consultar':'Comprar'}</button></div></article>`;
   };
   const filtrada = () => {
     const q = (document.getElementById('busca').value||'').toLowerCase().trim();
@@ -628,6 +629,7 @@
   }
   fetch('catalogo.json').then(r=>r.json()).then(d=>{
     ITENS = d.itens;
+    window.__CATALOGO = d.itens;
     const hv=document.getElementById('heroVis');
     if(hv){ const dest=featured(4).slice(0,4);
       hv.innerHTML=dest.map(x=>`<a href="produto.html?p=${encodeURIComponent(x.p)}" title="${(x.nome||'').replace(/"/g,'')}" style="background-image:url('${x.img}')"></a>`).join(''); }
