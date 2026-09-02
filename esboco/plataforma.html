@@ -1,4 +1,5 @@
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dix Medical — Equipamentos, consumíveis e serviços para clínicas | A plataforma da saúde</title>
 <meta name="description" content="Compre equipamentos e consumíveis médicos e contrate serviços — PACS, telelaudo, teleconsulta, IA clínica, locação e mão de obra — num lugar só. Da Dix Medical e de parceiros, vendedor oficial com AFE. Preço, frete e prazo na hora.">
 <meta name="keywords" content="equipamentos hospitalares, equipamento médico, consumíveis médicos, loja médica, desfibrilador DEA, monitor multiparâmetro, eletrocardiógrafo, aparelho de anestesia, PACS, telelaudo, teleconsulta, locação de equipamento médico, ambulância, Dix Medical">
@@ -76,7 +77,7 @@
 
   * { box-sizing:border-box; }
   html { scroll-behavior:smooth; }
-  body { margin:0; background:var(--bg); color:var(--ink);
+  body { margin:0; background:var(--bg); color:var(--ink); overflow-x:hidden;
     font-family:"IBM Plex Sans", ui-sans-serif, system-ui, sans-serif; font-size:16px; line-height:1.55;
     -webkit-font-smoothing:antialiased; }
   h1,h2,h3 { font-family:Archivo, ui-sans-serif, system-ui, sans-serif; margin:0; letter-spacing:-.03em; text-wrap:balance; }
@@ -110,6 +111,23 @@
   .btn-ghost:hover { color:var(--ink); }
   .btn-solid { background:var(--ink); color:var(--bg); font-weight:600; font-size:.88rem; padding:.55rem 1.1rem; border-radius:999px; }
   .btn-solid:hover { opacity:.88; }
+  .menu-btn { display:none; align-items:center; justify-content:center; width:42px; height:42px; border:1px solid var(--line); border-radius:10px; background:var(--surface); color:var(--ink); cursor:pointer; margin-left:.6rem; flex:none; }
+  nav.main .only-mob { display:none; }
+  @media (max-width:60rem){
+    .menu-btn { display:inline-flex; }
+    .head-acts .btn-ghost { display:none; }
+    .btn-solid { font-size:.8rem; padding:.5rem .85rem; }
+    header.top .head { position:relative; }
+    nav.main.open { display:flex; flex-direction:column; align-items:stretch; gap:.1rem; position:absolute; top:calc(100% + 1px); left:0; right:0; background:var(--surface); border-bottom:1px solid var(--line); box-shadow:var(--shadow); padding:.4rem 1rem 1rem; z-index:60; }
+    nav.main.open a { padding:.75rem .2rem; border-bottom:1px solid var(--line-soft); }
+    nav.main.open .nav-drop { display:block; }
+    nav.main.open .nav-drop .nav-menu { position:static; display:block; box-shadow:none; border:0; padding:.2rem 0 .4rem .8rem; background:none; min-width:0; }
+    nav.main .only-mob { display:block; }
+  }
+  @media (max-width:34rem){
+    .hero .acts { flex-direction:column; align-items:stretch; }
+    .hero .acts > a { width:100%; justify-content:center; text-align:center; }
+  }
 
   /* ---- hero ---- */
   .hero { padding:clamp(1.4rem,1rem+1.6vw,2.2rem) 0 clamp(1rem,.8rem+1vw,1.6rem); }
@@ -334,11 +352,13 @@
       <a href="#locacao">Locação</a>
       <a href="#profissionais">Profissionais</a>
       <a href="#parceiros">Parceiros</a>
+      <a href="admin.html" class="only-mob">Entrar</a>
     </nav>
     <div class="head-acts">
       <a href="admin.html" class="btn-ghost">Entrar</a>
       <a href="https://wa.me/5511943163804" target="_blank" rel="noopener" class="btn-solid">Falar com a gente</a>
     </div>
+    <button class="menu-btn" id="menuBtn" aria-label="Abrir menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
   </div>
 </header>
 
@@ -664,6 +684,10 @@
       document.getElementById('produtos').scrollIntoView({behavior:'smooth',block:'start'});
     }));
     document.getElementById('busca').addEventListener('input', ()=>atualizar(true));
+    (function(){ const mb=document.getElementById('menuBtn'), nv=document.querySelector('nav.main'); if(mb&&nv){
+      mb.addEventListener('click',()=>{ const o=nv.classList.toggle('open'); mb.setAttribute('aria-expanded',o); });
+      nv.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{ nv.classList.remove('open'); mb.setAttribute('aria-expanded','false'); }));
+    }})();
     try { const q0 = new URLSearchParams(location.search).get('q'); if (q0) { const bi = document.getElementById('busca'); bi.value = q0; atualizar(true); document.getElementById('produtos').scrollIntoView(); } } catch(e){}
     document.querySelectorAll('#segOrig .sg').forEach(b=>b.addEventListener('click',()=>{
       document.querySelectorAll('#segOrig .sg').forEach(x=>x.classList.remove('on')); b.classList.add('on');
