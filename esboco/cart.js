@@ -13,6 +13,36 @@
   const total = () => itens.reduce((s, i) => s + Number(i.preco) * i.qtd, 0);
   const conta = () => itens.reduce((s, i) => s + i.qtd, 0);
 
+  // ---- frete (estimativa honesta por região do CEP; confirmada com o vendedor) ----
+  const GRATIS_ACIMA = 1500;
+  let cep = ''; try { cep = localStorage.getItem('dixcep') || ''; } catch (e) {}
+  let frete = null; // {grupo, valor, prazo, gratis, local} ou {erro}
+  const soDigitos = s => (s || '').replace(/\D/g, '').slice(0, 8);
+  function regiaoCEP(c) {
+    const map = {
+      '0': ['São Paulo', 25, '2 a 4 dias úteis'], '1': ['São Paulo (interior)', 28, '2 a 5 dias úteis'],
+      '2': ['Rio de Janeiro / ES', 35, '3 a 6 dias úteis'], '3': ['Minas Gerais', 35, '3 a 6 dias úteis'],
+      '4': ['Bahia / Sergipe', 60, '5 a 9 dias úteis'], '5': ['Pernambuco / PB / AL / RN', 65, '6 a 10 dias úteis'],
+      '6': ['Ceará / Norte', 85, '8 a 14 dias úteis'], '7': ['DF / Centro-Oeste', 55, '5 a 9 dias úteis'],
+      '8': ['Paraná / Santa Catarina', 45, '4 a 7 dias úteis'], '9': ['Rio Grande do Sul', 48, '4 a 8 dias úteis']
+    };
+    return map[c[0]] || null;
+  }
+  function calcularFrete() {
+    const c = soDigitos(cep);
+    if (c.length !== 8) { frete = { erro: 'Digite um CEP com 8 números' }; render(); return; }
+    const r = regiaoCEP(c);
+    if (!r) { frete = { erro: 'CEP não reconhecido' }; render(); return; }
+    const gratis = total() >= GRATIS_ACIMA;
+    frete = { grupo: r[0], valor: gratis ? 0 : r[1], prazo: r[2], gratis, local: r[0] };
+    try { localStorage.setItem('dixcep', c); } catch (e) {}
+    render();
+    fetch('https://viacep.com.br/ws/' + c + '/json/').then(x => x.json()).then(j => {
+      if (j && j.localidade && frete && !frete.erro) { frete.local = j.localidade + ' - ' + j.uf; render(); }
+    }).catch(() => {});
+  }
+  const totalGeral = () => total() + (frete && !frete.erro ? frete.valor : 0);
+
   function acharNoCatalogo(slug) {
     const cat = window.__CATALOGO || [];
     return cat.find(p => p.p === slug) || null;
@@ -41,7 +71,10 @@
       if (!itens.length) return;
       let m = 'Olá! Quero fazer um pedido na plataforma Dix:%0A%0A';
       itens.forEach(i => { m += `• ${i.qtd}× ${enc(i.nome)} — ${enc(brl(i.preco * i.qtd))}%0A`; });
-      m += `%0ATotal: ${enc(brl(total()))}%0A%0APode confirmar disponibilidade e forma de pagamento?`;
+      m += `%0ASubtotal: ${enc(brl(total()))}`;
+      if (frete && !frete.erro) m += `%0AFrete (${enc(frete.local || frete.grupo)}): ${frete.gratis ? 'grátis' : enc(brl(frete.valor))} — ${enc(frete.prazo)}`;
+      const c = soDigitos(cep); if (c.length === 8) m += `%0ACEP: ${c.slice(0, 5)}-${c.slice(5)}`;
+      m += `%0ATotal: ${enc(brl(totalGeral()))}%0A%0APode confirmar disponibilidade e forma de pagamento?`;
       window.open(`https://wa.me/${WHATS}?text=${m}`, '_blank', 'noopener');
     },
     abrir: () => abrir(), fechar: () => fechar(),
@@ -78,6 +111,12 @@
     .dc-ft{border-top:1px solid var(--line,#E2E9F1);padding:1.1rem 1.2rem;background:var(--surface,#fff)}
     .dc-tot{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.5rem}
     .dc-tot b{font-family:Archivo;font-weight:800;font-size:1.3rem}
+    .dc-cep{margin-bottom:.8rem}
+    .dc-cep label{display:block;font-size:.78rem;color:var(--ink-soft,#4A5A6B);margin-bottom:.35rem;font-weight:600}
+    .dc-cep-in{display:flex;gap:.5rem}
+    .dc-cep-in input{flex:1;min-width:0;border:1px solid var(--line,#E2E9F1);border-radius:9px;padding:.55rem .7rem;font:inherit;background:var(--surface,#fff);color:var(--ink,#0E1B2A)}
+    .dc-cep-in button{border:0;background:var(--primary,#01376B);color:#fff;border-radius:9px;padding:0 1rem;font:inherit;font-weight:600;cursor:pointer;white-space:nowrap}
+    .dc-cep-in button:hover{filter:brightness(1.08)}
     .dc-note{font-size:.75rem;color:var(--ink-faint,#8494A6);margin:.1rem 0 .9rem}
     .dc-go{width:100%;border:0;border-radius:12px;padding:.9rem;background:#25D366;color:#fff;font:700 1rem "IBM Plex Sans",sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem}
     .dc-go:hover{filter:brightness(.96)}
@@ -109,6 +148,7 @@
     toastEl = document.createElement('div'); toastEl.className = 'dc-toast'; document.body.appendChild(toastEl);
     document.addEventListener('keydown', e => { if (e.key === 'Escape') fechar(); });
     render();
+    if (soDigitos(cep).length === 8 && itens.length) calcularFrete();
     if (location.hash === '#cart' && itens.length) abrir();
   }
 
@@ -149,11 +189,25 @@
       else if (b.dataset.a === 'menos') Cart.setQty(slug, it.qtd - 1);
       else Cart.remove(slug);
     }));
+    const cd = soDigitos(cep), cepFmt = cd.length > 5 ? cd.slice(0, 5) + '-' + cd.slice(5) : cd;
+    const freteLinha = (frete && !frete.erro)
+      ? `<div class="dc-tot" style="font-size:.92rem"><span>Frete <span style="color:var(--ink-faint)">· ${frete.local || frete.grupo}</span></span><b style="font-size:1rem;color:${frete.gratis ? 'var(--ok,#3DC04E)' : 'inherit'}">${frete.gratis ? 'grátis' : brl(frete.valor)}</b></div>
+         <div class="dc-note" style="margin:0 0 .6rem">Entrega estimada: ${frete.prazo}. ${frete.gratis ? 'Frete grátis neste pedido 🎉' : 'Estimativa — itens muito pesados podem ter frete sob consulta.'}</div>`
+      : (frete && frete.erro ? `<div class="dc-note" style="color:#C0392B;margin:0 0 .6rem">${frete.erro}.</div>` : '');
     footWrap.innerHTML = `<div class="dc-ft">
-      <div class="dc-tot"><span>Total</span><b>${brl(total())}</b></div>
+      <div class="dc-cep">
+        <label>Calcular frete e prazo</label>
+        <div class="dc-cep-in"><input id="dc-cep" inputmode="numeric" maxlength="9" placeholder="Seu CEP" value="${cepFmt}"><button id="dc-cep-b">Calcular</button></div>
+      </div>
+      ${freteLinha}
+      <div class="dc-tot"><span>Total</span><b>${brl(totalGeral())}</b></div>
       <div class="dc-note">Você finaliza pelo WhatsApp com o vendedor — ele confirma disponibilidade e forma de pagamento. Nada é cobrado agora.</div>
       <button class="dc-go" id="dc-go"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1012 2z"/></svg> Finalizar pelo WhatsApp</button>
     </div>`;
+    const cepIn = footWrap.querySelector('#dc-cep');
+    const disparar = () => { cep = cepIn.value; calcularFrete(); };
+    footWrap.querySelector('#dc-cep-b').addEventListener('click', disparar);
+    cepIn.addEventListener('keydown', e => { if (e.key === 'Enter') disparar(); });
     footWrap.querySelector('#dc-go').addEventListener('click', () => Cart.checkout());
   }
 
