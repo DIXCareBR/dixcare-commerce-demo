@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Painel da loja · Dix Medical</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root{ --bg:#F4F7FB; --surface:#fff; --ink:#0E1B2A; --ink-soft:#4A5A6B; --ink-faint:#8494A6; --line:#E2E9F1; --primary:#01376B; --primary2:#0A5AA8; --ok:#3DC04E; --radius:16px; --shadow:0 12px 30px rgba(6,22,45,.10); }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){ --bg:#0A1520; --surface:#0F1E2E; --ink:#EAF1F8; --ink-soft:#A7B7C7; --ink-faint:#6E8092; --line:#1E3346; --primary:#4E9BE6; --primary2:#7CB8F0; }}
+  *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;line-height:1.5}
+  header{border-bottom:1px solid var(--line);background:var(--surface);padding:1rem 1.3rem;display:flex;align-items:center;justify-content:space-between}
+  header .brand{font-family:Archivo;font-weight:800}
+  header a{color:var(--primary);font-weight:600;text-decoration:none;font-size:.9rem}
+  .wrap{max-width:60rem;margin:0 auto;padding:1.6rem 1.3rem 3rem}
+  h1{font-family:Archivo;font-weight:800;letter-spacing:-.02em;font-size:1.7rem;margin:.6rem 0 .2rem}
+  .sub{color:var(--ink-soft);margin:0 0 1.6rem}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(15rem,1fr));gap:1.1rem}
+  .card{display:flex;flex-direction:column;gap:.5rem;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:1.3rem;box-shadow:var(--shadow);text-decoration:none;color:inherit;transition:transform .14s,box-shadow .14s}
+  .card:hover{transform:translateY(-4px);box-shadow:0 18px 40px -18px rgba(1,55,107,.4)}
+  .card .ic{width:48px;height:48px;border-radius:13px;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--primary) 12%,transparent);color:var(--primary);margin-bottom:.3rem}
+  .card h3{font-family:Archivo;font-weight:700;font-size:1.12rem;margin:0}
+  .card p{margin:0;font-size:.88rem;color:var(--ink-soft)}
+  .card .go{margin-top:.4rem;font-size:.85rem;font-weight:600;color:var(--primary)}
+  .card.wide{grid-column:1/-1;flex-direction:row;align-items:center;gap:1rem}
+  .card.wide .ic{margin:0;flex:none}
+  .gate{position:fixed;inset:0;background:var(--bg);z-index:100;display:flex;align-items:center;justify-content:center;padding:1.5rem}
+  .gate .box{max-width:22rem;width:100%;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1.6rem;box-shadow:var(--shadow);text-align:center}
+  .gate input{width:100%;border:1px solid var(--line);border-radius:9px;padding:.6rem;font:inherit;margin:.9rem 0;background:var(--bg);color:var(--ink)}
+  .gate button{width:100%;border:0;background:var(--ok);color:#fff;font:inherit;font-weight:700;padding:.7rem;border-radius:9px;cursor:pointer}
+  .msg{color:#C0392B;font-size:.85rem;min-height:1rem}
+</style>
+</head>
+<body>
+<header>
+  <span class="brand">Dix<span style="color:var(--primary)">Medical</span> · Painel</span>
+  <a href="plataforma.html">Ver a loja ↗</a>
+</header>
+<div class="wrap">
+  <h1>Painel da loja</h1>
+  <p class="sub">Um lugar só pra cuidar da loja — produtos, serviços, textos e catálogo.</p>
+  <div class="grid">
+    <a class="card" href="editor.html">
+      <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 20h4L18 10l-4-4L4 16z"/><path d="M13 5l4 4"/></svg></div>
+      <h3>Produtos & textos</h3>
+      <p>Edite a vitrine visualmente: arraste fotos, mude nomes, preços e os textos da home.</p>
+      <span class="go">Abrir editor visual →</span>
+    </a>
+    <a class="card" href="editor-servicos.html">
+      <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg></div>
+      <h3>Serviços</h3>
+      <p>Sistemas & SaaS, Locação e Profissionais: foto, descrição, preço, pista e disponibilidade.</p>
+      <span class="go">Abrir editor de serviços →</span>
+    </a>
+    <a class="card" href="admin.html">
+      <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 3h18v6H3zM3 15h18v6H3z"/><path d="M7 6h.01M7 18h.01"/></svg></div>
+      <h3>Catálogo & estoque</h3>
+      <p>Administração ligada ao banco: preço, estoque, publicar e destaques dos produtos.</p>
+      <span class="go">Abrir admin →</span>
+    </a>
+    <a class="card" href="dados.html">
+      <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+      <h3>Como cuidamos dos dados</h3>
+      <p>A página pública de privacidade/LGPD — o que é automático e o que passa por uma pessoa.</p>
+      <span class="go">Ver página →</span>
+    </a>
+    <a class="card wide" href="plataforma.html">
+      <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 9h18M9 21V9"/><rect x="3" y="3" width="18" height="18" rx="2"/></svg></div>
+      <div><h3>Ver a loja no ar</h3><p>Abre a vitrine como o cliente vê — pra conferir tudo depois de editar.</p></div>
+    </a>
+  </div>
+</div>
+
+<div class="gate" id="gate">
+  <div class="box">
+    <h2 style="font-family:Archivo;font-weight:800;margin:0">Acesso do dono</h2>
+    <p style="color:var(--ink-soft);font-size:.9rem;margin:.3rem 0 0">Painel de administração da loja.</p>
+    <input id="pw" type="password" placeholder="Senha" autocomplete="off">
+    <div class="msg" id="msg"></div>
+    <button id="enter">Entrar</button>
+  </div>
+</div>
+<script>
+  var g=document.getElementById('gate');
+  function abrir(){ g.style.display='none'; }
+  if(sessionStorage.getItem('dixadm')==='1') abrir();
+  document.getElementById('enter').onclick=function(){
+    if(document.getElementById('pw').value==='dix2026'){ sessionStorage.setItem('dixadm','1'); abrir(); }
+    else document.getElementById('msg').textContent='Senha incorreta.';
+  };
+  document.getElementById('pw').addEventListener('keydown',function(e){ if(e.key==='Enter') document.getElementById('enter').click(); });
+</script>
+</body>
+</html>
