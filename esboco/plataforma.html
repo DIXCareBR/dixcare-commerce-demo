@@ -179,7 +179,8 @@
   .serv .cap .ic { width:60px; height:60px; border-radius:16px; display:flex; align-items:center; justify-content:center;
     color:#fff; background:color-mix(in srgb,var(--primary) 80%,transparent); box-shadow:var(--shadow-sm); }
   .serv.has-img .cap .ic { display:none; }
-  .serv.has-img .cap { background-color:#fff; background-size:contain; background-repeat:no-repeat; background-position:center; }
+  .serv.has-img .cap { background-size:cover; background-position:center; }
+  .serv.has-prod .cap { background-color:#fff; background-size:contain; background-repeat:no-repeat; }
   .serv .bd { padding:1.25rem 1.35rem 1.35rem; display:flex; flex-direction:column; flex:1; }
   .serv h3 { font-size:1.15rem; font-weight:700; }
   .serv p { font-size:.9rem; color:var(--ink-soft); margin:.5rem 0 1rem; flex:1; }
@@ -675,21 +676,21 @@
   ];
   // PISTA 2 — profissionais & mão de obra: quem PRESTA o serviço (terceirização)
   const profissionais = [
-    { nome:'Médicos', ico:'<circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-4 3.5-6 7-6s7 2 7 6"/>', desc:'Plantão, escala ou parecer — pra sua clínica ou pros clientes da plataforma.', pr:'sob consulta', por:'', fut:true },
+    { nome:'Médicos', img:'img/serv-medicos.jpg', ico:'<circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-4 3.5-6 7-6s7 2 7 6"/>', desc:'Plantão, escala ou parecer — pra sua clínica ou pros clientes da plataforma.', pr:'sob consulta', por:'', fut:true },
     { nome:'Enfermagem', ico:'<circle cx="12" cy="7" r="3"/><path d="M5 20c0-4 3-6 7-6s7 2 7 6"/><path d="M11.2 2.5h1.6v1.3h1.3v1.6h-1.3v1.3h-1.6V5.4H9.9V3.8h1.3z"/>', desc:'Enfermeiro e técnico de enfermagem, por escala ou por chamado.', pr:'sob consulta', por:'', fut:true },
     { nome:'Técnicos', ico:'<path d="M14.7 6.3a4 4 0 00-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 005.4-5.4l-2.6 2.6-2.4-.6-.6-2.4 2.6-2.6z"/>', desc:'Técnico em equipamento e em procedimento, contratado via plataforma.', pr:'sob consulta', por:'', fut:true },
     { nome:'Manutenção &amp; conserto', ico:'<path d="M14.7 6.3a4 4 0 00-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 005.4-5.4l-2.6 2.6-2.4-.6-.6-2.4 2.6-2.6z"/>', desc:'Preventiva e corretiva de equipamento médico, com peça e laudo técnico.', pr:'sob consulta', por:'', fut:true },
   ];
   // PISTA 3 — locação: alugar em vez de comprar (equipamento e veículo)
   const locacao = [
-    { nome:'Locação de equipamentos', img:'https://loja.dixmedical.com.br/image/cache/catalog/7200A%20picture-front%20view%20(1)-800x800.png', ico:'<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4M7 8h6M7 11h4"/>', desc:'Equipamento médico por diária ou mensal — monitor, ventilador, aparelho de anestesia — sem imobilizar capital. Manutenção inclusa.', pr:'sob consulta', por:'', fut:true },
+    { nome:'Locação de equipamentos', img:'https://loja.dixmedical.com.br/image/cache/catalog/7200A%20picture-front%20view%20(1)-800x800.png', branco:true, ico:'<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4M7 8h6M7 11h4"/>', desc:'Equipamento médico por diária ou mensal — monitor, ventilador, aparelho de anestesia — sem imobilizar capital. Manutenção inclusa.', pr:'sob consulta', por:'', fut:true },
     { nome:'Locação de veículos', ico:'<path d="M3 16V9h10l3 3h5v4"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/><path d="M3 12h10"/>', desc:'Van de transporte e veículo da clínica, por diária ou mensal.', pr:'sob consulta', por:'', fut:true },
     { nome:'Ambulância', ico:'<path d="M3 17V8h11l4 4h3v5"/><circle cx="7.5" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/><path d="M9 6v4M7 8h4"/>', desc:'USB e USA com equipe — remoção, transporte e plantão, por diária, mensal ou por chamado. Bolsa conferida a cada saída.', pr:'sob consulta', por:'', fut:true },
   ];
   function renderServ(arr, elId, verbo){
     const el = document.getElementById(elId); if(!el) return;
     el.innerHTML = arr.map(s => `
-    <div class="serv reveal${s.img?' has-img':''}">
+    <div class="serv reveal${s.img?(s.branco?' has-img has-prod':' has-img'):''}">
       <div class="cap"${s.img?` style="background-image:url('${s.img}')"`:''}>${s.fut?'':'<span class="selo">Disponível</span>'}
         <div class="ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">${s.ico}</svg></div>
       </div>
