@@ -179,6 +179,7 @@
   .serv .cap .ic { width:60px; height:60px; border-radius:16px; display:flex; align-items:center; justify-content:center;
     color:#fff; background:color-mix(in srgb,var(--primary) 80%,transparent); box-shadow:var(--shadow-sm); }
   .serv.has-img .cap .ic { display:none; }
+  .serv.has-img .cap { background-color:#fff; background-size:contain; background-repeat:no-repeat; background-position:center; }
   .serv .bd { padding:1.25rem 1.35rem 1.35rem; display:flex; flex-direction:column; flex:1; }
   .serv h3 { font-size:1.15rem; font-weight:700; }
   .serv p { font-size:.9rem; color:var(--ink-soft); margin:.5rem 0 1rem; flex:1; }
@@ -681,7 +682,7 @@
   ];
   // PISTA 3 — locação: alugar em vez de comprar (equipamento e veículo)
   const locacao = [
-    { nome:'Locação de equipamentos', ico:'<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4M7 8h6M7 11h4"/>', desc:'Equipamento médico por diária ou mensal — monitor, ventilador, foco — sem imobilizar capital. Manutenção inclusa.', pr:'sob consulta', por:'', fut:true },
+    { nome:'Locação de equipamentos', img:'https://loja.dixmedical.com.br/image/cache/catalog/7200A%20picture-front%20view%20(1)-800x800.png', ico:'<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4M7 8h6M7 11h4"/>', desc:'Equipamento médico por diária ou mensal — monitor, ventilador, aparelho de anestesia — sem imobilizar capital. Manutenção inclusa.', pr:'sob consulta', por:'', fut:true },
     { nome:'Locação de veículos', ico:'<path d="M3 16V9h10l3 3h5v4"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/><path d="M3 12h10"/>', desc:'Van de transporte e veículo da clínica, por diária ou mensal.', pr:'sob consulta', por:'', fut:true },
     { nome:'Ambulância', ico:'<path d="M3 17V8h11l4 4h3v5"/><circle cx="7.5" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/><path d="M9 6v4M7 8h4"/>', desc:'USB e USA com equipe — remoção, transporte e plantão, por diária, mensal ou por chamado. Bolsa conferida a cada saída.', pr:'sob consulta', por:'', fut:true },
   ];
