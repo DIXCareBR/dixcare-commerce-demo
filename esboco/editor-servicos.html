@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Editor de serviços · Dix Medical</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root{ --bg:#F4F7FB; --surface:#fff; --surface2:#EEF3F8; --ink:#0E1B2A; --ink-soft:#4A5A6B; --ink-faint:#8494A6;
+    --line:#E2E9F1; --primary:#01376B; --primary2:#0A5AA8; --ok:#3DC04E; --danger:#C0392B; --radius:14px; --shadow:0 10px 26px rgba(6,22,45,.10); }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){ --bg:#0A1520; --surface:#0F1E2E; --surface2:#152738; --ink:#EAF1F8; --ink-soft:#A7B7C7; --ink-faint:#6E8092; --line:#1E3346; --primary:#4E9BE6; --primary2:#7CB8F0; }}
+  *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;line-height:1.5}
+  header{position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:.8rem 1.2rem;gap:1rem}
+  header .brand{font-family:Archivo;font-weight:800}
+  header .acts{display:flex;gap:.6rem;align-items:center}
+  .btn{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:.55rem .9rem;font:inherit;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem}
+  .btn.primary{background:var(--ok);border-color:var(--ok);color:#fff}
+  .btn.ghost{color:var(--ink-soft)}
+  .wrap{max-width:70rem;margin:0 auto;padding:1.2rem}
+  .dica{background:color-mix(in srgb,var(--primary) 8%,transparent);border:1px solid color-mix(in srgb,var(--primary) 20%,transparent);color:var(--ink-soft);border-radius:12px;padding:.7rem 1rem;font-size:.88rem;margin-bottom:1.2rem}
+  h2.lane{font-family:Archivo;font-weight:800;font-size:1.1rem;margin:1.6rem 0 .8rem;display:flex;align-items:center;gap:.5rem}
+  h2.lane span{font-size:.72rem;font-weight:600;color:var(--ink-faint);background:var(--surface2);padding:.15em .6em;border-radius:999px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(17rem,1fr));gap:1rem}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column}
+  .drop{position:relative;height:120px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,color-mix(in srgb,var(--primary) 14%,var(--surface)),color-mix(in srgb,var(--primary2) 10%,var(--surface)));cursor:pointer;background-size:cover;background-position:center;border-bottom:1px solid var(--line)}
+  .drop .ic{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--primary) 80%,transparent);color:#fff}
+  .drop .hint{position:absolute;inset:auto 0 0 0;background:rgba(0,0,0,.55);color:#fff;font-size:.72rem;text-align:center;padding:.25rem;opacity:0;transition:opacity .15s}
+  .drop:hover .hint{opacity:1}
+  .drop.drag{outline:2px dashed var(--primary);outline-offset:-4px}
+  .bd{padding:.9rem;display:flex;flex-direction:column;gap:.5rem;flex:1}
+  .bd input[type=text],.bd textarea,.bd select{width:100%;border:1px solid var(--line);border-radius:8px;padding:.45rem .55rem;font:inherit;background:var(--bg);color:var(--ink)}
+  .bd textarea{resize:vertical;min-height:3.2rem;font-size:.85rem}
+  .bd label{font-size:.72rem;color:var(--ink-faint);font-weight:600}
+  .row{display:flex;gap:.5rem}.row>*{flex:1}
+  .foot{display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin-top:.2rem}
+  .sw{display:inline-flex;align-items:center;gap:.4rem;font-size:.82rem;color:var(--ink-soft)}
+  .rm{border:0;background:none;color:var(--danger);font-size:.8rem;font-weight:600;cursor:pointer}
+  .add{border:1.5px dashed var(--line);background:none;border-radius:var(--radius);min-height:120px;color:var(--ink-soft);font:inherit;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.4rem}
+  .add:hover{border-color:var(--primary);color:var(--primary)}
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:.7rem 1.1rem;border-radius:10px;font-size:.88rem;opacity:0;transition:.2s;z-index:50}
+  .toast.on{opacity:1;transform:translateX(-50%)}
+  .gate{position:fixed;inset:0;background:var(--bg);z-index:100;display:flex;align-items:center;justify-content:center;padding:1.5rem}
+  .gate .box{max-width:22rem;width:100%;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1.5rem;box-shadow:var(--shadow);text-align:center}
+  .gate input{width:100%;border:1px solid var(--line);border-radius:9px;padding:.6rem;font:inherit;margin:.8rem 0;background:var(--bg);color:var(--ink)}
+</style>
+</head>
+<body>
+<header>
+  <span class="brand">Editor de serviços</span>
+  <div class="acts">
+    <a class="btn ghost" href="plataforma.html#sistemas" target="_blank">Ver na loja ↗</a>
+    <button class="btn" id="reset">Restaurar padrão</button>
+    <button class="btn primary" id="salvar">Salvar</button>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="dica">✏️ Clique num campo pra editar · arraste uma foto (ou clique) no topo do card · mude a pista no seletor · <b>Salvar</b> aplica na loja deste navegador. Depois é só publicar.</div>
+  <div id="lanes"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="gate" id="gate">
+  <div class="box">
+    <h2 style="font-family:Archivo;font-weight:800;margin:0 0 .2rem">Acesso do dono</h2>
+    <p style="color:var(--ink-soft);font-size:.9rem;margin:.2rem 0 0">Área de administração da loja.</p>
+    <input id="pw" type="password" placeholder="Senha" autocomplete="off">
+    <button class="btn primary" id="enter" style="width:100%;justify-content:center">Entrar</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  const $=s=>document.querySelector(s);
+  const KEY='dixservicos.v1';
+  const PISTAS=[{key:'sistemas',titulo:'Sistemas & SaaS',verbo:'conhecer'},{key:'locacao',titulo:'Locação',verbo:'orçar'},{key:'profissionais',titulo:'Profissionais & mão de obra',verbo:'contratar'}];
+  const ICO_FALLBACK='<circle cx="12" cy="12" r="9"/>';
+  let db=null;
+
+  const uid=()=> 's'+Math.random().toString(36).slice(2,8);
+  function toast(m){ const t=$('#toast'); t.textContent=m; t.classList.add('on'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('on'),2000); }
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(db)); toast('Salvo — abra a loja pra ver'); }catch(e){ toast('Foto grande demais; tente outra menor'); } }
+
+  async function carregar(){
+    let ov=null; try{ ov=JSON.parse(localStorage.getItem(KEY)); }catch(e){}
+    if(ov&&ov.itens){ db=ov; return; }
+    db=await fetch('servicos.json').then(r=>r.json());
+  }
+
+  function render(){
+    const box=$('#lanes'); box.innerHTML='';
+    PISTAS.forEach(P=>{
+      const its=db.itens.filter(x=>x.pista===P.key);
+      const sec=document.createElement('section');
+      sec.innerHTML=`<h2 class="lane">${P.titulo} <span>${its.length}</span></h2><div class="grid" data-lane="${P.key}"></div>`;
+      const grid=sec.querySelector('.grid');
+      its.forEach(it=>grid.appendChild(cardEl(it)));
+      const add=document.createElement('button'); add.className='add'; add.innerHTML='＋ Adicionar serviço';
+      add.onclick=()=>{ db.itens.push({id:uid(),pista:P.key,nome:'Novo serviço',desc:'Descreva o serviço.',preco:'sob consulta',unidade:'',img:'',branco:false,disponivel:false,ico:ICO_FALLBACK}); render(); };
+      grid.appendChild(add);
+      box.appendChild(sec);
+    });
+  }
+
+  function cardEl(it){
+    const el=document.createElement('div'); el.className='card';
+    const bg = it.img ? `style="background-image:url('${it.img}')"` : '';
+    const icon = it.img ? '' : `<div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">${it.ico||ICO_FALLBACK}</svg></div>`;
+    el.innerHTML=`
+      <div class="drop" ${bg}>${icon}<span class="hint">solte a foto ou clique</span>
+        <input type="file" accept="image/*" hidden></div>
+      <div class="bd">
+        <input type="text" class="f-nome" value="${esc(it.nome)}" placeholder="Nome">
+        <textarea class="f-desc" placeholder="Descrição">${esc(it.desc)}</textarea>
+        <div class="row">
+          <div><label>Preço</label><input type="text" class="f-preco" value="${esc(it.preco)}" placeholder="sob consulta"></div>
+          <div><label>Unidade</label><input type="text" class="f-unid" value="${esc(it.unidade)}" placeholder="/mês"></div>
+        </div>
+        <div><label>Pista</label><select class="f-pista">${PISTAS.map(p=>`<option value="${p.key}" ${p.key===it.pista?'selected':''}>${p.titulo}</option>`).join('')}</select></div>
+        <div class="foot">
+          <label class="sw"><input type="checkbox" class="f-disp" ${it.disponivel?'checked':''}> Disponível</label>
+          <button class="rm">remover</button>
+        </div>
+      </div>`;
+    const drop=el.querySelector('.drop'), file=el.querySelector('input[type=file]');
+    drop.onclick=()=>file.click();
+    file.onchange=e=>setImg(it,e.target.files[0]);
+    drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('drag');});
+    drop.addEventListener('dragleave',()=>drop.classList.remove('drag'));
+    drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('drag');const f=e.dataTransfer.files[0];if(f)setImg(it,f);});
+    el.querySelector('.f-nome').oninput=e=>it.nome=e.target.value;
+    el.querySelector('.f-desc').oninput=e=>it.desc=e.target.value;
+    el.querySelector('.f-preco').oninput=e=>it.preco=e.target.value;
+    el.querySelector('.f-unid').oninput=e=>it.unidade=e.target.value;
+    el.querySelector('.f-disp').onchange=e=>it.disponivel=e.target.checked;
+    el.querySelector('.f-pista').onchange=e=>{ it.pista=e.target.value; render(); };
+    el.querySelector('.rm').onclick=()=>{ if(confirm('Remover "'+it.nome+'"?')){ db.itens=db.itens.filter(x=>x!==it); render(); } };
+    return el;
+  }
+
+  // reduz a foto pra caber no navegador (máx 720px, JPEG)
+  function setImg(it,file){
+    if(!file) return;
+    const r=new FileReader();
+    r.onload=()=>{ const img=new Image(); img.onload=()=>{
+      const max=720, sc=Math.min(1,max/Math.max(img.width,img.height));
+      const c=document.createElement('canvas'); c.width=Math.round(img.width*sc); c.height=Math.round(img.height*sc);
+      c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+      it.img=c.toDataURL('image/jpeg',0.82); it.branco=false; render(); toast('Foto colocada');
+    }; img.src=r.result; };
+    r.readAsDataURL(file);
+  }
+
+  const esc=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+
+  $('#salvar').onclick=save;
+  $('#reset').onclick=async()=>{ if(confirm('Descartar suas mudanças e voltar ao padrão?')){ localStorage.removeItem(KEY); db=await fetch('servicos.json').then(r=>r.json()); render(); toast('Voltou ao padrão'); } };
+
+  // gate simples do dono (trava de demonstração)
+  function abrir(){ $('#gate').style.display='none'; carregar().then(render); }
+  const SENHA='dix2026';
+  if(sessionStorage.getItem('dixadm')==='1'){ abrir(); }
+  $('#enter').onclick=()=>{ if($('#pw').value===SENHA){ sessionStorage.setItem('dixadm','1'); abrir(); } else { toast('Senha incorreta'); } };
+  $('#pw').addEventListener('keydown',e=>{ if(e.key==='Enter') $('#enter').click(); });
+})();
+</script>
+</body>
+</html>
