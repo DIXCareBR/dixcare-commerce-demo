@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Como cuidamos dos dados · Dix Medical</title>
+<meta name="description" content="Como a plataforma Dix Medical trata e protege o dado das clínicas e dos pacientes — em linguagem clara e sem prometer o que o software não faz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --bg:#F4F7FB; --surface:#fff; --ink:#0E1B2A; --ink-soft:#4A5A6B; --ink-faint:#8494A6;
+    --line:#E2E9F1; --primary:#01376B; --primary-2:#0A5AA8; --ok:#3DC04E; --radius:16px;
+    --shadow:0 12px 30px rgba(6,22,45,.10);
+  }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+    --bg:#0A1520; --surface:#0F1E2E; --ink:#EAF1F8; --ink-soft:#A7B7C7; --ink-faint:#6E8092;
+    --line:#1E3346; --primary:#4E9BE6; --primary-2:#7CB8F0;
+  }}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;line-height:1.6}
+  .wrap{max-width:52rem;margin:0 auto;padding:0 1.3rem}
+  header{border-bottom:1px solid var(--line);background:var(--surface)}
+  header .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+  header a.back{color:var(--primary);font-weight:600;text-decoration:none;font-size:.92rem}
+  header .brand{font-family:Archivo;font-weight:800;letter-spacing:-.02em}
+  h1{font-family:Archivo;font-weight:800;letter-spacing:-.02em;font-size:2rem;margin:2.4rem 0 .4rem}
+  .lede{color:var(--ink-soft);font-size:1.08rem;margin:0 0 2rem}
+  h2{font-family:Archivo;font-weight:700;letter-spacing:-.01em;font-size:1.3rem;margin:2.2rem 0 .6rem}
+  p{margin:.5rem 0}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:1.3rem 1.5rem;margin:1rem 0;box-shadow:var(--shadow)}
+  .status{display:flex;gap:.7rem;align-items:flex-start;padding:.6rem 0;border-bottom:1px solid var(--line)}
+  .status:last-child{border-bottom:0}
+  .dot{flex:0 0 auto;width:.7rem;height:.7rem;border-radius:50%;margin-top:.5rem}
+  .dot.on{background:var(--ok)} .dot.human{background:var(--primary-2)}
+  .status b{display:block}
+  .status span{color:var(--ink-soft);font-size:.92rem}
+  .tag{display:inline-block;font-size:.72rem;font-weight:600;padding:.15em .6em;border-radius:999px;margin-left:.4rem;vertical-align:middle}
+  .tag.auto{color:var(--ok);background:color-mix(in srgb,var(--ok) 14%,transparent)}
+  .tag.hum{color:var(--primary-2);background:color-mix(in srgb,var(--primary-2) 14%,transparent)}
+  a{color:var(--primary)}
+  footer{border-top:1px solid var(--line);margin-top:3rem;padding:1.6rem 0;color:var(--ink-faint);font-size:.82rem}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <span class="brand">Dix<span style="color:var(--primary)">Medical</span></span>
+  <a class="back" href="plataforma.html">← Voltar à plataforma</a>
+</div></header>
+
+<main class="wrap">
+  <h1>Como cuidamos dos dados</h1>
+  <p class="lede">Em linguagem clara, e sem prometer o que o software não faz. O que segue é a verdade de hoje — se algo mudar, esta página muda junto.</p>
+
+  <h2>Que dado a plataforma trata</h2>
+  <p>Dado da <b>clínica</b> (cadastro, catálogo, pedidos) e, quando um serviço clínico é usado, dado do <b>paciente</b>. Tratamos o mínimo necessário para a compra, a contratação e a conciliação — nada além do que o serviço exige.</p>
+
+  <h2>Como protegemos</h2>
+  <div class="card">
+    <p><b>Isolamento por domínio.</b> A loja vive em endereço próprio, separada do sistema clínico. Uma falha de um lado não alcança a sessão nem o dado do outro — quem isola é o navegador, não a boa vontade do código.</p>
+    <p><b>Acesso com papel.</b> Cada pessoa entra com login próprio e vê só o que o seu papel permite. Sair de propósito encerra a sessão; o que fica guardado no navegador tem regra e prazo.</p>
+    <p><b>Trilha.</b> Ações sensíveis ficam registradas — dá para saber quem fez o quê e quando.</p>
+  </div>
+
+  <h2>Seus direitos de LGPD — e o que o sistema faz de verdade</h2>
+  <p>Aqui está a parte que a maioria esconde. Somos honestos sobre o que é automático e o que passa por uma pessoa:</p>
+  <div class="card">
+    <div class="status"><span class="dot on"></span><div><b>Acessar e exportar seus dados <span class="tag auto">automático</span></b><span>O sistema junta os seus dados e gera o pacote na hora.</span></div></div>
+    <div class="status"><span class="dot human"></span><div><b>Corrigir um dado <span class="tag hum">registro + pessoa</span></b><span>O pedido é registrado e uma pessoa responsável executa. Não é instantâneo — de propósito.</span></div></div>
+    <div class="status"><span class="dot human"></span><div><b>Excluir ou anonimizar <span class="tag hum">registro + pessoa</span></b><span>Apagar dado clínico não pode ser efeito colateral de um clique. O pedido entra, e a exclusão é feita por uma pessoa, dentro do que a lei de guarda médica permite.</span></div></div>
+  </div>
+  <p style="color:var(--ink-soft);font-size:.92rem">Por que assim? Porque dado de saúde tem prazo legal de guarda e uma exclusão errada é irreversível. Preferimos o caminho que uma pessoa confere a um que apaga sozinho.</p>
+
+  <h2>Falar com a gente sobre dados</h2>
+  <p>Pedido de acesso, correção ou exclusão, ou qualquer dúvida sobre privacidade: <a href="https://wa.me/5511943163804" target="_blank" rel="noopener">fale com a gente no WhatsApp</a> ou escreva para <a href="mailto:contato@dixmedical.com.br">contato@dixmedical.com.br</a>.</p>
+</main>
+
+<footer><div class="wrap">Dix Medical · esta página descreve o tratamento de dados vigente e é atualizada quando o sistema muda.</div></footer>
+</body>
+</html>
