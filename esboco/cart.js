@@ -69,12 +69,14 @@
     limpar() { itens = []; salvar(); render(); },
     checkout() {
       if (!itens.length) return;
-      let m = 'Olá! Quero fazer um pedido na plataforma Dix:%0A%0A';
+      const cliente = (window.Cliente && window.Cliente.blocoPedido) ? window.Cliente.blocoPedido() : '';
+      let m = cliente + 'Olá! Quero fazer um pedido na plataforma Dix:%0A%0A';
       itens.forEach(i => { m += `• ${i.qtd}× ${enc(i.nome)} — ${enc(brl(i.preco * i.qtd))}%0A`; });
       m += `%0ASubtotal: ${enc(brl(total()))}`;
       if (frete && !frete.erro) m += `%0AFrete (${enc(frete.local || frete.grupo)}): ${frete.gratis ? 'grátis' : enc(brl(frete.valor))} — ${enc(frete.prazo)}`;
       const c = soDigitos(cep); if (c.length === 8) m += `%0ACEP: ${c.slice(0, 5)}-${c.slice(5)}`;
       m += `%0ATotal: ${enc(brl(totalGeral()))}%0A%0APode confirmar disponibilidade e forma de pagamento?`;
+      try { window.Cliente && window.Cliente.registrarPedido && window.Cliente.registrarPedido({ itens: itens.map(i => ({ nome: i.nome, preco: i.preco, qtd: i.qtd })), total: totalGeral(), cep: soDigitos(cep), frete: (frete && !frete.erro) ? frete.valor : 0 }); } catch (e) {}
       window.open(`https://wa.me/${WHATS}?text=${m}`, '_blank', 'noopener');
     },
     abrir: () => abrir(), fechar: () => fechar(),
