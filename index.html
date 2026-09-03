@@ -188,6 +188,15 @@
   .prod .pr .po small { font-family:"IBM Plex Sans"; font-weight:500; font-size:.72rem; color:var(--ink-faint); }
   .prod .cmp { margin-top:.6rem; background:var(--surface-2); color:var(--ink); font-weight:600; font-size:.8rem; padding:.5rem; border-radius:10px; display:flex; align-items:center; justify-content:center; gap:.4rem; transition:background .12s; }
   .prod .cmp:hover { background:var(--primary); color:#fff; }
+  /* --- polimento fino --- */
+  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focus-visible { outline:2px solid var(--primary-2); outline-offset:2px; border-radius:8px; }
+  header.top { transition:box-shadow .2s, background .2s; }
+  header.top.scrolled { box-shadow:0 8px 24px -14px rgba(9,18,30,.28); background:color-mix(in srgb, var(--bg) 94%, transparent); }
+  .cta-a { transition:transform .15s, filter .15s, box-shadow .15s; }
+  .cta-a:hover { transform:translateY(-2px); filter:brightness(1.03); }
+  .btn-solid { transition:transform .14s, opacity .14s; } .btn-solid:hover { transform:translateY(-1px); }
+  .prod .fig { transition:transform .18s; } .prod:hover .fig > * { }
+  .ver-cat, .link { transition:color .12s; }
 
   /* ---- serviços (editorial) ---- */
   .passos { display:flex; flex-direction:column; gap:.7rem; margin:1.4rem 0 1.7rem; }
@@ -685,6 +694,7 @@
       document.getElementById('produtos').scrollIntoView({behavior:'smooth',block:'start'});
     }));
     document.getElementById('busca').addEventListener('input', ()=>atualizar(true));
+    (function(){ const h=document.querySelector('header.top'); if(h){ const on=()=>h.classList.toggle('scrolled', (window.pageYOffset||document.documentElement.scrollTop||document.body.scrollTop||0) > 8); on(); window.addEventListener('scroll', on, {passive:true}); } })();
     (function(){ const mb=document.getElementById('menuBtn'), nv=document.querySelector('nav.main'); if(mb&&nv){
       mb.addEventListener('click',()=>{ const o=nv.classList.toggle('open'); mb.setAttribute('aria-expanded',o); });
       nv.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{ nv.classList.remove('open'); mb.setAttribute('aria-expanded','false'); }));
