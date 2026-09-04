@@ -596,7 +596,7 @@
     const preco = temPreco
       ? `<div class="po">${brl(p.preco)} <small>à vista</small></div>${p.preco>=300?`<div class="parcela">ou 12× de ${brl(p.preco/12)} sem juros</div>`:''}`
       : `<div class="po" style="font-size:1.05rem;color:var(--ink-soft)">Sob consulta</div>`;
-    return `<article class="prod reveal in" onclick="location.href='produto.html?p=${encodeURIComponent(p.p)}'" style="cursor:pointer">
+    return `<article class="prod reveal in" data-p="${p.p}" onclick="location.href='produto.html?p=${encodeURIComponent(p.p)}'" style="cursor:pointer">
       <div class="fig" style="background:#fff url('${p.img}') center/contain no-repeat;border:1px solid var(--line);border-radius:12px 12px 0 0"></div>
       <div class="body"><span class="cat">${p.cat}</span><h3>${p.nome}</h3>
       <span class="vend"><span class="dot">${check}</span>Vendido por <b>${p.vendedor||'Dix Medical'}</b></span>
@@ -675,7 +675,8 @@
   }
   fetch('catalogo.json').then(r=>r.json()).then(d=>{
     ITENS = d.itens;
-    window.__CATALOGO = d.itens;
+    try{ var _ovc=JSON.parse(localStorage.getItem("dixcatalogo.v1")||"{}"); if(_ovc&&typeof _ovc==="object") ITENS = ITENS.map(function(it){ return _ovc[it.p] ? Object.assign({}, it, _ovc[it.p]) : it; }); }catch(e){}
+    window.__CATALOGO = d.itens; window.__CAT_FULL = d;
     const hv=document.getElementById('heroVis');
     if(hv){ const dest=featured(4).slice(0,4);
       hv.innerHTML=dest.map(x=>`<a href="produto.html?p=${encodeURIComponent(x.p)}" title="${(x.nome||'').replace(/"/g,'')}" style="background-image:url('${x.img}')"></a>`).join(''); }
@@ -712,6 +713,7 @@
       ct.innerHTML = [...dest, ...dest].map(cardC).join('');
     }
     renderShelves(); atualizar();
+    if(window.__initEditorVitrine) window.__initEditorVitrine({ getITENS:function(){return ITENS;}, setITENS:function(v){ITENS=v;}, renderLoja:renderLoja, reRender:function(){ try{renderShelves();}catch(e){} try{atualizar(true);}catch(e){} }, catFull:d });
   }).catch(()=>{ gEl.innerHTML = '<p style="color:var(--ink-faint)">Catálogo indisponível no momento.</p>'; });
 
   function renderServ(arr, elId, verbo){
@@ -744,3 +746,132 @@
   document.querySelectorAll('.reveal').forEach((el,i)=>{ el.style.transitionDelay=(Math.min(i%6,5)*40)+'ms'; io.observe(el); });
 })();
 </script>
+
+<style id="edix-css">
+  .edix-bar{position:fixed;right:16px;bottom:16px;z-index:200;display:flex;gap:.5rem;align-items:center;
+    background:var(--surface,#fff);border:1px solid var(--line,#E2E9F1);border-radius:999px;padding:.4rem .5rem;
+    box-shadow:0 12px 34px -14px rgba(1,55,107,.5);font-family:"IBM Plex Sans",system-ui,sans-serif}
+  .edix-bar button{border:0;border-radius:999px;padding:.5rem .9rem;font:inherit;font-weight:600;font-size:.85rem;cursor:pointer}
+  .edix-edit{background:#01376B;color:#fff}
+  .edix-pub{background:#3DC04E;color:#062a12;display:none}
+  .edix-out{background:transparent;color:#45566A;display:none}
+  .edix-st{font-size:.76rem;color:#45566A;max-width:15rem;display:none}
+  body.edix-on .prod{outline:2px dashed rgba(1,55,107,.45);outline-offset:2px;cursor:default!important}
+  body.edix-on .prod::after{content:"✎ editar";position:absolute;top:6px;right:6px;background:#01376B;color:#fff;
+    font-size:.62rem;font-weight:700;padding:.15rem .4rem;border-radius:6px;z-index:3}
+  body.edix-on .prod{position:relative}
+  .edix-ov{position:fixed;inset:0;background:rgba(9,18,30,.5);z-index:210;display:none}
+  .edix-ov.on{display:block}
+  .edix-modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:211;width:min(380px,94vw);
+    background:var(--surface,#fff);color:var(--ink,#0B1826);border:1px solid var(--line,#E2E9F1);border-radius:16px;
+    box-shadow:0 30px 70px -25px rgba(9,18,30,.5);padding:1.2rem;font-family:"IBM Plex Sans",system-ui,sans-serif;display:none}
+  .edix-modal.on{display:block}
+  .edix-modal h3{font-family:Archivo,sans-serif;font-weight:800;margin:0 0 .8rem;font-size:1.1rem}
+  .edix-modal label{display:block;font-size:.76rem;font-weight:600;color:#45566A;margin:.7rem 0 .25rem}
+  .edix-modal input{width:100%;border:1px solid var(--line,#E2E9F1);border-radius:9px;padding:.55rem .7rem;font:inherit;background:var(--surface-2,#EEF3F9);color:inherit}
+  .edix-fig{width:100%;height:120px;border:1px dashed var(--line,#E2E9F1);border-radius:10px;background:#fff center/contain no-repeat;margin-top:.3rem;display:flex;align-items:center;justify-content:center;color:#7A8B9C;font-size:.8rem;cursor:pointer}
+  .edix-row{display:flex;gap:.6rem;margin-top:1rem}
+  .edix-row button{flex:1;border:0;border-radius:10px;padding:.7rem;font:inherit;font-weight:700;cursor:pointer}
+  .edix-save{background:#3DC04E;color:#062a12} .edix-cancel{background:var(--surface-2,#EEF3F9);color:#45566A}
+</style>
+<script>
+window.__initEditorVitrine = function(api){
+  if(window.__edixReady) return; window.__edixReady = true;
+  var OV='dixcatalogo.v1';
+  function getOv(){ try{ return JSON.parse(localStorage.getItem(OV)||'{}')||{}; }catch(e){ return {}; } }
+  function setOv(o){ try{ localStorage.setItem(OV, JSON.stringify(o)); }catch(e){} }
+  function reaplicar(){
+    var ov=getOv(); var base=(api.catFull&&api.catFull.itens)||[];
+    api.setITENS(base.map(function(it){ return ov[it.p] ? Object.assign({}, it, ov[it.p]) : it; }));
+    if(api.reRender) api.reRender(); else api.renderLoja(true);
+  }
+  var brl=function(v){ return 'R$ '+Number(v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); };
+
+  // barra
+  var bar=document.createElement('div'); bar.className='edix-bar';
+  bar.innerHTML='<button class="edix-edit">✎ Editar</button><button class="edix-pub">⬆ Publicar</button><button class="edix-out">Sair</button><span class="edix-st"></span>';
+  document.body.appendChild(bar);
+  // a barra só aparece para a equipa: já destravado, OU abriu com ?editar / #editar. O cliente não a vê.
+  var _destr=(function(){ try{ return sessionStorage.getItem('dixadm')==='1'; }catch(e){ return false; } })();
+  if(!( _destr || /(?:^|[?#&])editar(?:=|&|$)/.test(location.search+location.hash) )) bar.style.display='none';
+  var bEdit=bar.querySelector('.edix-edit'), bPub=bar.querySelector('.edix-pub'), bOut=bar.querySelector('.edix-out'), st=bar.querySelector('.edix-st');
+  function diz(m,ok){ st.style.display='block'; st.textContent=m; st.style.color= ok?'#16855A':'#45566A'; }
+
+  var editing=false;
+  function unlocked(){ try{ return sessionStorage.getItem('dixadm')==='1'; }catch(e){ return false; } }
+  function entrar(){
+    if(unlocked()) return true;
+    var c=prompt('Código de edição:');
+    if(c==='dix2026'){ try{ sessionStorage.setItem('dixadm','1'); }catch(e){} return true; }
+    if(c!=null) alert('Código incorreto.');
+    return false;
+  }
+  bEdit.addEventListener('click', function(){
+    if(!editing){ if(!entrar()) return; editing=true; document.body.classList.add('edix-on');
+      bEdit.textContent='● Editando'; bPub.style.display='inline-block'; bOut.style.display='inline-block';
+      diz('Clique num produto para editar nome, preço ou foto.'); }
+    else { abrirLista(); }
+  });
+  bOut.addEventListener('click', function(){ editing=false; document.body.classList.remove('edix-on');
+    bEdit.textContent='✎ Editar'; bPub.style.display='none'; bOut.style.display='none'; st.style.display='none'; });
+
+  // clique num card em modo edição: interceta no DOCUMENTO (fase de captura), travado pela classe do body
+  // (robusto: não depende de variável interna nem do container que re-renderiza)
+  document.addEventListener('click', function(e){
+    if(!document.body.classList.contains('edix-on')) return;
+    var art=e.target.closest('.prod[data-p]'); if(!art) return;
+    e.preventDefault(); e.stopImmediatePropagation();
+    abrir(art.getAttribute('data-p'));
+  }, true);
+
+  // modal de edicao
+  var ov=document.createElement('div'); ov.className='edix-ov'; document.body.appendChild(ov);
+  var mo=document.createElement('div'); mo.className='edix-modal'; document.body.appendChild(mo);
+  ov.addEventListener('click', fechar);
+  var alvo=null, imgTmp=null;
+  function prodPorP(pp){ var arr=api.getITENS(); for(var i=0;i<arr.length;i++) if(arr[i].p===pp) return arr[i]; return null; }
+  function abrir(pp){
+    var it=prodPorP(pp); if(!it) return; alvo=pp; imgTmp=null;
+    mo.innerHTML='<h3>Editar produto</h3>'+
+      '<label>Nome</label><input id="edix-nome" value="'+String(it.nome||'').replace(/"/g,"&quot;")+'">'+
+      '<label>Preço (R$) — 0 = sob consulta</label><input id="edix-preco" type="number" step="0.01" value="'+(Number(it.preco)||0)+'">'+
+      '<label>Foto</label><div class="edix-fig" id="edix-fig" style="background-image:url(\''+(it.img||'')+'\')">'+(it.img?'':'clique para escolher')+'</div>'+
+      '<input id="edix-file" type="file" accept="image/*" style="display:none">'+
+      '<div class="edix-row"><button class="edix-cancel">Cancelar</button><button class="edix-save">Guardar</button></div>';
+    mo.classList.add('on'); ov.classList.add('on');
+    var fig=mo.querySelector('#edix-fig'), file=mo.querySelector('#edix-file');
+    fig.addEventListener('click',function(){ file.click(); });
+    file.addEventListener('change',function(){ var f=file.files[0]; if(!f) return; var r=new FileReader(); r.onload=function(){ imgTmp=r.result; fig.style.backgroundImage='url(\''+imgTmp+'\')'; fig.textContent=''; }; r.readAsDataURL(f); });
+    mo.querySelector('.edix-cancel').addEventListener('click', fechar);
+    mo.querySelector('.edix-save').addEventListener('click', guardar);
+  }
+  function fechar(){ mo.classList.remove('on'); ov.classList.remove('on'); alvo=null; }
+  function guardar(){
+    if(!alvo) return;
+    var nome=mo.querySelector('#edix-nome').value.trim();
+    var preco=parseFloat(mo.querySelector('#edix-preco').value)||0;
+    var o=getOv(); var patch=o[alvo]||{}; patch.nome=nome; patch.preco=preco;
+    if(imgTmp) patch.img=imgTmp; o[alvo]=patch; setOv(o);
+    reaplicar(); fechar(); diz('Alterado. Clique Publicar para pôr no ar.', true);
+  }
+  function abrirLista(){ diz('Já está em edição — clique num produto.'); }
+
+  // publicar
+  bPub.addEventListener('click', function(){
+    var cat=Object.assign({}, api.catFull, { itens: api.getITENS(), total: api.getITENS().length });
+    diz('A publicar…');
+    fetch('http://localhost:4599/publicar', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({catalogo:cat}) })
+      .then(function(r){ return r.json().catch(function(){return {};}).then(function(b){ return {ok:r.ok, b:b}; }); })
+      .then(function(x){ if(x.ok){ diz('Publicado no ar ✓ '+(x.b.commit?('('+x.b.commit+')'):''), true); }
+        else { throw new Error(x.b && x.b.erro || 'recusado'); } })
+      .catch(function(){
+        // sem ajudante local: descarrega o ficheiro para publicar
+        try{ var blob=new Blob([JSON.stringify(cat,null,0)],{type:'application/json'});
+          var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='catalogo.json'; a.click();
+          diz('Ajudante desligado — guardei catalogo.json. Ele publica quando o PC estiver ligado.'); }
+        catch(e){ diz('Não consegui publicar agora.'); }
+      });
+  });
+};
+</script>
+
